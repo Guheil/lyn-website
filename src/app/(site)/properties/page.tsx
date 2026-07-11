@@ -29,7 +29,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ p
   }
 
   return <>
-    <PageHero label="Property listings" title="Available property opportunities in La Union." description="Browse represented listings by property type. Each page includes location details, specifications, photos, and inquiry information." image="https://picsum.photos/seed/la-union-property-catalog/1800/1000" />
+    <PageHero label="Property listings" title="Available property opportunities in La Union." description="Browse represented listings by property type. Each page includes location details, specifications, photos, and inquiry information." image="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=2000&q=84" />
     <Box component="section" sx={{ py: 'clamp(72px,8vw,124px)', px: 'clamp(20px,4vw,48px)', bgcolor: 'background.paper' }}>
       <Box sx={{ maxWidth: 1440, mx: 'auto' }}>
         <Stack direction={{ xs: 'column', lg: 'row' }} sx={{ justifyContent: 'space-between', alignItems: { xs: 'flex-start', lg: 'flex-end' }, gap: 3, mb: 5 }}>

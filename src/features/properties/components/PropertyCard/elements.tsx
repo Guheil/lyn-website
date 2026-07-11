@@ -1,5 +1,98 @@
 'use client';
+
 import { styled } from '@mui/material';
-export const StyledCard = styled('article')(({ theme }) => ({ height: '100%', border: `1px solid ${theme.palette.divider}`, background: theme.palette.background.paper, overflow: 'hidden', transition: 'transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease', '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 20px 55px rgba(22,20,16,.09)', borderColor: 'rgba(128,97,47,.45)' }, '& a': { display: 'grid', height: '100%' } }));
-export const StyledMedia = styled('div', { shouldForwardProp: (prop) => prop !== 'image' })<{ image: string }>(({ image }) => ({ minHeight: 290, background: `linear-gradient(rgba(32,32,30,.08),rgba(32,32,30,.08)), url("${image}") center/cover, linear-gradient(135deg,#d8d0c2,#f6f2ea)` }));
-export const StyledBody = styled('div')(({ theme }) => ({ padding: 24, display: 'grid', alignContent: 'start', gap: 12, '& p': { margin: 0 }, '& .meta': { display: 'flex', flexWrap: 'wrap', gap: 8 }, '& .meta span': { border: `1px solid ${theme.palette.divider}`, padding: '7px 9px', color: theme.palette.text.secondary, fontSize: '.8rem' } }));
+
+export const StyledCard = styled('article')(({ theme }) => ({
+  height: '100%',
+  background: 'transparent',
+  '& > a': { display: 'grid', height: '100%' },
+  '&:hover .property-arrow': { opacity: 1, transform: 'translate(0,0)' },
+  '&:hover img': { transform: 'scale(1.035)' },
+  '&:hover .view-link': { color: theme.palette.primary.dark },
+}));
+
+export const StyledMedia = styled('div')(({ theme }) => ({
+  position: 'relative',
+  aspectRatio: '4 / 3',
+  overflow: 'hidden',
+  background: '#ddd8ce',
+  '& img': {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    transition: 'transform 700ms cubic-bezier(.22,1,.36,1)',
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    inset: 0,
+    background: 'linear-gradient(180deg, rgba(18,18,16,.18), transparent 45%)',
+    pointerEvents: 'none',
+  },
+  '& .property-index': {
+    position: 'absolute',
+    zIndex: 1,
+    top: 16,
+    left: 16,
+    padding: '7px 10px',
+    background: 'rgba(251,250,247,.92)',
+    color: theme.palette.text.primary,
+    fontSize: '.68rem',
+    letterSpacing: '.08em',
+    textTransform: 'uppercase',
+    backdropFilter: 'blur(8px)',
+  },
+  '& .property-arrow': {
+    position: 'absolute',
+    zIndex: 1,
+    right: 16,
+    bottom: 16,
+    width: 44,
+    height: 44,
+    display: 'grid',
+    placeItems: 'center',
+    background: '#fff',
+    color: theme.palette.text.primary,
+    opacity: 0,
+    transform: 'translate(-6px,6px)',
+    transition: 'opacity 220ms ease, transform 260ms cubic-bezier(.22,1,.36,1)',
+  },
+  [theme.breakpoints.down('md')]: { '& .property-arrow': { opacity: 1, transform: 'none' } },
+}));
+
+export const StyledBody = styled('div')(({ theme }) => ({
+  display: 'grid',
+  alignContent: 'start',
+  gap: 13,
+  padding: '22px 0 8px',
+  borderBottom: `1px solid ${theme.palette.divider}`,
+  '& h3': {
+    margin: 0,
+    fontSize: 'clamp(1.4rem,1.8vw,1.72rem)',
+    lineHeight: 1.16,
+    letterSpacing: '-.03em',
+  },
+  '& .meta': { display: 'flex', flexWrap: 'wrap', gap: '7px 18px' },
+  '& .meta span': {
+    position: 'relative',
+    color: theme.palette.text.secondary,
+    fontSize: '.79rem',
+    '&:not(:last-child)::after': { content: '"·"', position: 'absolute', right: -11, color: theme.palette.divider },
+  },
+  '& .description': {
+    color: theme.palette.text.secondary,
+    display: '-webkit-box',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden',
+  },
+  '& .view-link': {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 7,
+    marginTop: 3,
+    fontSize: '.84rem',
+    fontWeight: 700,
+    transition: 'color 180ms ease',
+  },
+}));
