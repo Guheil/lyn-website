@@ -1,89 +1,132 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import {
-  StyledCredentialGrid,
+  StyledCredentialGroup,
   StyledCredentialLightbox,
-  StyledCredentialLightboxImage,
+  StyledCredentialLightboxDocument,
+  StyledCredentialRegister,
 } from './elements';
+
+type CredentialLayout = 'feature' | 'standard' | 'wide';
+type CredentialTone = 'sand' | 'ivory' | 'stone' | 'warm';
 
 type PlaceholderCredential = {
   id: string;
   title: string;
   issuer: string;
-  image: string;
-  alt: string;
-  layout: 'portrait-large' | 'portrait' | 'landscape';
+  documentType: string;
+  layout: CredentialLayout;
+  tone: CredentialTone;
   verificationNote?: string;
 };
 
-const fallbackImage = '/credentials/credential-image-unavailable.jpg';
+type CredentialGroup = {
+  id: string;
+  title: string;
+  description: string;
+  credentials: PlaceholderCredential[];
+};
 
+const credentialGroups: CredentialGroup[] = [
+  {
+    id: 'business-records',
+    title: 'Business records',
+    description:
+      'Documents that establish the ownership, registration, and lawful operation of the property group.',
+    credentials: [
+      {
+        id: 'business-registration',
+        title: 'Business Registration',
+        issuer: 'Issuing organization to be confirmed',
+        documentType: 'Registration record',
+        layout: 'feature',
+        tone: 'ivory',
+        verificationNote: 'A verification link may be added when the official copy is available.',
+      },
+      {
+        id: 'business-permit',
+        title: 'Government Business Permit',
+        issuer: 'Local issuing authority to be confirmed',
+        documentType: 'Permit or authorization',
+        layout: 'standard',
+        tone: 'sand',
+      },
+    ],
+  },
+  {
+    id: 'supporting-records',
+    title: 'Training and affiliations',
+    description:
+      'Supporting records that show relevant training, industry participation, and professional development.',
+    credentials: [
+      {
+        id: 'training-certificate',
+        title: 'Property Services Training Certificate',
+        issuer: 'Training provider to be confirmed',
+        documentType: 'Training certificate',
+        layout: 'wide',
+        tone: 'stone',
+        verificationNote: 'Verification details may be displayed with the final document.',
+      },
+      {
+        id: 'membership-certificate',
+        title: 'Business or Industry Membership',
+        issuer: 'Professional organization to be confirmed',
+        documentType: 'Membership certificate',
+        layout: 'standard',
+        tone: 'warm',
+      },
+    ],
+  },
+];
 
-function CredentialImage({
+const credentials = credentialGroups.flatMap((group) => group.credentials);
+
+function CredentialDocumentVisual({
   credential,
-  eager = false,
   lightbox = false,
 }: {
   credential: PlaceholderCredential;
-  eager?: boolean;
   lightbox?: boolean;
 }) {
-  const [src, setSrc] = useState(credential.image);
-  const width = credential.layout === 'landscape' ? 1600 : 1200;
-  const height = credential.layout === 'landscape' ? 1120 : 1600;
-
   return (
-    <Image
-      src={src}
-      alt={credential.alt}
-      width={width}
-      height={height}
-      sizes={lightbox ? '95vw' : '(max-width: 600px) calc(100vw - 48px), (max-width: 900px) 50vw, 58vw'}
-      priority={eager}
-      loading={eager ? 'eager' : 'lazy'}
-      onError={() => setSrc(fallbackImage)}
-    />
+    <div
+      className={`document-preview document-preview-${credential.layout} document-tone-${credential.tone}${lightbox ? ' is-lightbox' : ''}`}
+      aria-hidden="true"
+    >
+      <div className="document-page">
+        <div className="document-brand">
+          <span>LB</span>
+          <i />
+        </div>
+        <p className="document-status">Public preview placeholder</p>
+        <h3>{credential.title}</h3>
+        <p className="document-summary">
+          A reviewed and redacted public copy of this document will replace this placeholder.
+        </p>
+        <dl>
+          <div>
+            <dt>Document type</dt>
+            <dd>{credential.documentType}</dd>
+          </div>
+          <div>
+            <dt>Issuing body</dt>
+            <dd>{credential.issuer}</dd>
+          </div>
+          <div>
+            <dt>Public reference</dt>
+            <dd>Pending final document review</dd>
+          </div>
+        </dl>
+        <span className="document-watermark">SAMPLE</span>
+        <span className="document-stamp">Replace before publishing</span>
+        <small>This preview is not an official credential.</small>
+      </div>
+    </div>
   );
 }
-
-const placeholderCredentials: PlaceholderCredential[] = [
-  {
-    id: 'owner-identification',
-    title: 'Property Group Owner Identification',
-    issuer: 'Public-safe owner document to be supplied',
-    image: '/credentials/sample-professional-license.jpg',
-    alt: 'Sample placeholder for a redacted property group owner identification document',
-    layout: 'portrait-large',
-  },
-  {
-    id: 'business-registration',
-    title: 'Business Registration',
-    issuer: 'EOFB Realty / J33 INT’L Trading & Dev. Corp.',
-    image: '/credentials/sample-business-registration.jpg',
-    alt: 'Sample placeholder for a redacted real estate business registration document',
-    layout: 'portrait',
-  },
-  {
-    id: 'training-certificate',
-    title: 'Business Training Certificate',
-    issuer: 'Training provider to be confirmed',
-    image: '/credentials/sample-training-certificate.jpg',
-    alt: 'Sample placeholder for a business or property-services training certificate',
-    layout: 'landscape',
-    verificationNote: 'Verification details may be shown when available.',
-  },
-  {
-    id: 'membership-certificate',
-    title: 'Business or Industry Membership',
-    issuer: 'Professional organization to be confirmed',
-    image: '/credentials/sample-membership-certificate.jpg',
-    alt: 'Sample placeholder for a business or industry membership certificate',
-    layout: 'portrait',
-  },
-];
 
 export function CredentialGallery() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -103,14 +146,14 @@ export function CredentialGallery() {
   const previous = useCallback(() => {
     setOpenIndex((current) => {
       if (current === null) return current;
-      return (current - 1 + placeholderCredentials.length) % placeholderCredentials.length;
+      return (current - 1 + credentials.length) % credentials.length;
     });
   }, []);
 
   const next = useCallback(() => {
     setOpenIndex((current) => {
       if (current === null) return current;
-      return (current + 1) % placeholderCredentials.length;
+      return (current + 1) % credentials.length;
     });
   }, []);
 
@@ -162,32 +205,50 @@ export function CredentialGallery() {
     };
   }, [close, next, openIndex, previous]);
 
-  const active = openIndex === null ? null : placeholderCredentials[openIndex];
-
+  const active = openIndex === null ? null : credentials[openIndex];
   return (
     <>
-      <StyledCredentialGrid>
-        {placeholderCredentials.map((credential, index) => (
-          <figure key={credential.id} className={credential.layout}>
-            <button
-              ref={(node) => { openerRefs.current[index] = node; }}
-              type="button"
-              className="credential-image-button"
-              onClick={() => setOpenIndex(index)}
-              aria-label={`Enlarge ${credential.title}`}
-            >
-              <CredentialImage credential={credential} eager={index === 0} />
-              <span className="inspect-label">View document</span>
-            </button>
-            <figcaption>
-              <h2>{credential.title}</h2>
-              <p>{credential.issuer}</p>
-              <span>Sample placeholder. Replace before publishing.</span>
-              {credential.verificationNote ? <small>{credential.verificationNote}</small> : null}
-            </figcaption>
-          </figure>
+      <StyledCredentialRegister>
+        {credentialGroups.map((group) => (
+          <StyledCredentialGroup key={group.id}>
+            <header>
+              <h2>{group.title}</h2>
+              <p>{group.description}</p>
+            </header>
+            <div className="credential-documents">
+              {group.credentials.map((credential) => {
+                const index = credentials.findIndex((item) => item.id === credential.id);
+                return (
+                  <figure key={credential.id} className={credential.layout}>
+                    <button
+                      ref={(node) => {
+                        openerRefs.current[index] = node;
+                      }}
+                      type="button"
+                      className="credential-document-button"
+                      onClick={() => setOpenIndex(index)}
+                      aria-label={`Enlarge ${credential.title}`}
+                    >
+                      <CredentialDocumentVisual credential={credential} />
+                    </button>
+                    <figcaption>
+                      <div>
+                        <h3>{credential.title}</h3>
+                        <p>{credential.issuer}</p>
+                      </div>
+                      <span className="document-open-cue">
+                        View full document <ArrowUpRight size={15} aria-hidden="true" />
+                      </span>
+                      <small>Sample placeholder. Replace before publishing.</small>
+                      {credential.verificationNote ? <em>{credential.verificationNote}</em> : null}
+                    </figcaption>
+                  </figure>
+                );
+              })}
+            </div>
+          </StyledCredentialGroup>
         ))}
-      </StyledCredentialGrid>
+      </StyledCredentialRegister>
 
       {active ? (
         <StyledCredentialLightbox
@@ -200,20 +261,28 @@ export function CredentialGallery() {
             if (event.target === event.currentTarget) close();
           }}
         >
-          <button ref={closeButtonRef} type="button" className="close" onClick={close} aria-label="Close enlarged credential">
+          <button
+            ref={closeButtonRef}
+            type="button"
+            className="close"
+            onClick={close}
+            aria-label="Close enlarged credential"
+          >
             <X size={22} />
           </button>
           <button type="button" className="previous" onClick={previous} aria-label="Previous credential">
             <ChevronLeft size={24} />
           </button>
-          <StyledCredentialLightboxImage>
-            <CredentialImage key={active.id} credential={active} lightbox />
+          <StyledCredentialLightboxDocument>
+            <CredentialDocumentVisual credential={active} lightbox />
             <div className="lightbox-caption">
               <strong>{active.title}</strong>
               <span>{active.issuer}</span>
-              <small>{openIndex! + 1} / {placeholderCredentials.length}</small>
+              <small>
+                {openIndex! + 1} / {credentials.length}
+              </small>
             </div>
-          </StyledCredentialLightboxImage>
+          </StyledCredentialLightboxDocument>
           <button type="button" className="next" onClick={next} aria-label="Next credential">
             <ChevronRight size={24} />
           </button>

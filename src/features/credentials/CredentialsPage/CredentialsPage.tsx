@@ -10,21 +10,26 @@ export function CredentialsPage() {
   return (
     <>
       <StyledCredentialsIntro>
-        <StyledInner>
-          <span className="intro-rule" aria-hidden="true" />
-          <h1>Business credentials available for review.</h1>
-          <p>
-            Public-safe copies of business registrations, permits, and owner documents for Lyn Bactad will be presented here to establish the legitimacy of the property group.
-          </p>
+        <StyledInner className="credentials-intro-grid">
+          <h1>Credentials and registrations.</h1>
+          <div className="credentials-intro-copy">
+            <p>
+              Public-facing documents connected to the ownership and operation of the property group are presented here for review.
+            </p>
+            <div className="credentials-intro-detail">
+              <span>Lyn Bactad Property Group</span>
+              <span>Redacted public copies only</span>
+            </div>
+          </div>
         </StyledInner>
       </StyledCredentialsIntro>
 
       <StyledSection>
         <StyledInner>
           <StyledCredentialsNote>
-            <strong>Placeholder documents</strong>
+            <strong>Preview status</strong>
             <p>
-              The samples below show the intended presentation only. They are not official credentials and must be replaced with reviewed, redacted copies before launch.
+              The documents below are design placeholders. They are not official credentials and must be replaced with reviewed, redacted copies before the page is published publicly.
             </p>
           </StyledCredentialsNote>
           <CredentialGallery />
