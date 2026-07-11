@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Lenis from 'lenis';
 import {
   StyledIntro,
@@ -19,7 +20,9 @@ const introImages = [
 ];
 
 export function SiteExperience({ children }: { children: ReactNode }) {
-  const [showIntro, setShowIntro] = useState(true);
+  const pathname = usePathname();
+  const [shouldPlayIntro] = useState(() => pathname === '/');
+  const [showIntro, setShowIntro] = useState(() => pathname === '/');
 
   useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -33,7 +36,7 @@ export function SiteExperience({ children }: { children: ReactNode }) {
       prevent: (node) => Boolean(node.closest('[data-lenis-prevent]')),
     });
 
-    if (!reducedMotion) lenis.stop();
+    if (shouldPlayIntro && !reducedMotion) lenis.stop();
 
     const resume = () => lenis.start();
     window.addEventListener('site:intro-complete', resume);
@@ -42,11 +45,16 @@ export function SiteExperience({ children }: { children: ReactNode }) {
       window.removeEventListener('site:intro-complete', resume);
       lenis.destroy();
     };
-  }, []);
+  }, [shouldPlayIntro]);
 
   useEffect(() => {
     const root = document.documentElement;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!shouldPlayIntro) {
+      root.dataset.introSeen = 'true';
+      return;
+    }
 
     if (reducedMotion) {
       const completeImmediately = window.setTimeout(() => {
@@ -72,11 +80,11 @@ export function SiteExperience({ children }: { children: ReactNode }) {
       window.clearTimeout(complete);
       document.body.style.overflow = previousOverflow;
     };
-  }, []);
+  }, [shouldPlayIntro]);
 
   return (
     <>
-      {showIntro && (
+      {showIntro && shouldPlayIntro && (
         <StyledIntro className="site-intro" aria-hidden="true">
           <StyledIntroStage>
             {introImages.map((image, index) => (

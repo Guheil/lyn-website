@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowUpRight, MapPin } from 'lucide-react';
 import { Box, Button, Stack, Typography } from '@mui/material';
+import { brokerProfile } from '@/constants/broker';
 import { PropertyGallery } from '@/features/properties/components/PropertyGallery';
 import { publicPropertyService } from '@/server/modules/properties';
 
@@ -39,6 +40,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     { label: 'Floor area', value: property.floorArea || 'Not provided' },
   ];
 
+  const inquiryHref = `/contact?property=${encodeURIComponent(property.title)}`;
+
   return (
     <Box component="section" sx={{ py: 'clamp(56px,7vw,96px)', px: 'clamp(20px,4vw,48px)', bgcolor: 'background.default' }}>
       <Box sx={{ maxWidth: 1440, mx: 'auto' }}>
@@ -67,7 +70,15 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             >
               {property.propertyType}
             </Typography>
-            <Typography variant="h1" sx={{ fontSize: 'clamp(2.65rem,6vw,6.2rem)', lineHeight: 0.95, maxWidth: 920, overflowWrap: 'anywhere' }}>
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: 'clamp(2.65rem,6vw,6.2rem)',
+                lineHeight: 0.95,
+                maxWidth: 920,
+                overflowWrap: 'anywhere',
+              }}
+            >
               {property.title}
             </Typography>
             <Stack direction="row" sx={{ gap: 1, alignItems: 'center', color: 'text.secondary', mt: 2.5 }}>
@@ -87,11 +98,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               alignItems: 'end',
             }}
           >
-            <Box>
-              <Typography color="text.secondary" sx={{ mb: 1 }}>
-                {property.shortDescription}
-              </Typography>
-            </Box>
+            <Typography color="text.secondary">{property.shortDescription}</Typography>
             <Box sx={{ minWidth: { xs: '100%', sm: 220 } }}>
               <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
                 Asking price
@@ -108,7 +115,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, 1fr) 360px' },
+            gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, 1fr) 380px' },
             gap: { xs: 5, lg: 7 },
             mt: { xs: 5, lg: 7 },
             alignItems: 'start',
@@ -138,18 +145,18 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', xl: 'minmax(0, 1.08fr) minmax(0, 0.92fr)' }, gap: 4, mb: 6 }}>
               <Box sx={{ bgcolor: 'background.paper', p: 'clamp(24px,3vw,34px)', border: '1px solid', borderColor: 'divider' }}>
                 <Typography variant="h3" sx={{ fontSize: '1.35rem', mb: 1.7 }}>
-                  Highlights
+                  Inquiry preparation
                 </Typography>
                 <Typography sx={{ color: 'text.secondary', lineHeight: 1.8 }}>
-                  This listing is presented with clear property information, a location-led context, and a direct inquiry path for serious buyers and investors.
+                  Ask about availability, ownership documents, viewing arrangements, access, utilities, and other information needed before making a property decision.
                 </Typography>
               </Box>
               <Box sx={{ bgcolor: '#f5f1e8', p: 'clamp(24px,3vw,34px)', border: '1px solid', borderColor: 'divider' }}>
                 <Typography variant="h3" sx={{ fontSize: '1.35rem', mb: 1.7 }}>
-                  Location context
+                  Location privacy
                 </Typography>
                 <Typography sx={{ color: 'text.secondary', lineHeight: 1.8 }}>
-                  The exact pin can be provided during inquiry once the public-facing location details are confirmed by the seller.
+                  The exact map pin can be shared during a serious inquiry once the seller approves the public location details.
                 </Typography>
               </Box>
             </Box>
@@ -181,39 +188,88 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             ) : null}
           </Box>
 
-          <Box sx={{ position: { lg: 'sticky' }, top: { lg: 110 } }}>
-            <Box sx={{ border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper', p: 'clamp(24px,3vw,34px)' }}>
-              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
-                Asking price
-              </Typography>
-              <Typography sx={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.1rem,2.8vw,3rem)', lineHeight: 1, mb: 3 }}>
-                {property.price}
-              </Typography>
-
-              <Box sx={{ display: 'grid', gap: 1.7, mb: 3.2 }}>
-                {facts.map((fact) => (
-                  <Box key={fact.label} sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 1.3 }}>
-                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
-                      {fact.label}
-                    </Typography>
-                    <Typography sx={{ fontWeight: 600 }}>{fact.value}</Typography>
-                  </Box>
-                ))}
+          <Box sx={{ order: { xs: -1, lg: 0 }, position: { lg: 'sticky' }, top: { lg: 110 } }}>
+            <Box sx={{ border: '1px solid', borderColor: 'divider', bgcolor: 'background.paper' }}>
+              <Box sx={{ p: 'clamp(24px,3vw,34px)', borderBottom: '1px solid', borderColor: 'divider' }}>
+                <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
+                  Asking price
+                </Typography>
+                <Typography sx={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.1rem,2.8vw,3rem)', lineHeight: 1 }}>
+                  {property.price}
+                </Typography>
               </Box>
 
-              <Button
-                href={`/contact?property=${encodeURIComponent(property.title)}`}
-                variant="contained"
-                color="secondary"
-                fullWidth
-                endIcon={<ArrowUpRight size={17} />}
-              >
-                Inquire about this property
-              </Button>
+              <Box sx={{ p: 'clamp(24px,3vw,34px)' }}>
+                <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
+                  Property representative
+                </Typography>
 
-              <Typography sx={{ color: 'text.secondary', mt: 2.2, fontSize: '0.92rem', lineHeight: 1.7 }}>
-                Serious inquiries can request availability confirmation, additional photos, and private location details.
-              </Typography>
+                <Stack direction="row" sx={{ gap: 2, alignItems: 'center', mb: 2.4 }}>
+                  <Box
+                    aria-hidden="true"
+                    sx={{
+                      width: 54,
+                      height: 54,
+                      flex: '0 0 auto',
+                      display: 'grid',
+                      placeItems: 'center',
+                      border: '1px solid',
+                      borderColor: 'text.primary',
+                      fontWeight: 800,
+                      letterSpacing: '.08em',
+                    }}
+                  >
+                    LB
+                  </Box>
+                  <Box sx={{ minWidth: 0 }}>
+                    <Typography variant="h3" sx={{ fontSize: '1.35rem', lineHeight: 1.15 }}>
+                      {brokerProfile.name}
+                    </Typography>
+                    <Typography color="text.secondary" sx={{ mt: 0.5, fontSize: '.9rem' }}>
+                      {brokerProfile.role}
+                    </Typography>
+                  </Box>
+                </Stack>
+
+                <Box sx={{ display: 'grid', gap: 1.6, mb: 3 }}>
+                  <Box sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 1.3 }}>
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.4 }}>
+                      Company
+                    </Typography>
+                    <Typography sx={{ fontWeight: 600, lineHeight: 1.5 }}>{brokerProfile.company}</Typography>
+                  </Box>
+                  <Box sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 1.3 }}>
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.4 }}>
+                      Service area
+                    </Typography>
+                    <Typography sx={{ fontWeight: 600, lineHeight: 1.5 }}>{brokerProfile.serviceArea}</Typography>
+                  </Box>
+                  <Box sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 1.3 }}>
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.4 }}>
+                      Contact channels
+                    </Typography>
+                    <Typography sx={{ fontWeight: 600 }}>{brokerProfile.channels}</Typography>
+                  </Box>
+                </Box>
+
+                <Button
+                  href={inquiryHref}
+                  variant="contained"
+                  color="secondary"
+                  fullWidth
+                  endIcon={<ArrowUpRight size={17} />}
+                  sx={{ minHeight: 48 }}
+                >
+                  Inquire about this property
+                </Button>
+                <Button href="/credentials" fullWidth sx={{ mt: 1.2, minHeight: 46 }}>
+                  View broker credentials
+                </Button>
+
+                <Typography sx={{ color: 'text.secondary', mt: 2.2, fontSize: '0.88rem', lineHeight: 1.65 }}>
+                  Include the property title in your message. Public-safe credentials and professional background are available for review on the Credentials page.
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Box>
