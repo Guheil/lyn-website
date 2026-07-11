@@ -15,7 +15,12 @@ export function PropertyCard({ property }: PropertyCardProps) {
         <StyledMedia>
           {/* Database images remain the source of truth; this only covers listings without an image. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={property.images[0] || placeholder} alt="" loading="lazy" />
+          <img
+            src={property.images[0] || placeholder}
+            alt={`${property.title} in ${property.location}`}
+            loading="lazy"
+            decoding="async"
+          />
           <span className="property-index">{property.isFeatured ? 'Featured' : property.propertyType}</span>
           <span className="property-arrow"><ArrowUpRight size={18} /></span>
         </StyledMedia>

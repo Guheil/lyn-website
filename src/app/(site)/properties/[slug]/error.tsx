@@ -18,10 +18,10 @@ export default function PropertyError({ reset }: { error: Error & { digest?: str
     >
       <Stack sx={{ width: '100%', maxWidth: 720, alignItems: 'flex-start', gap: 2.5 }}>
         <Typography variant="h1" sx={{ fontSize: 'clamp(2.7rem,6vw,5.4rem)', lineHeight: 0.98 }}>
-          This property could not be displayed.
+          We could not load this property.
         </Typography>
         <Typography color="text.secondary" sx={{ maxWidth: 580, lineHeight: 1.75 }}>
-          The listing may contain incomplete legacy data or the property service may be temporarily unavailable. Try loading it again or return to the property list.
+          Please try again in a moment, or browse the other land, residential, commercial, and investment properties available across La Union.
         </Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ gap: 1.5, width: { xs: '100%', sm: 'auto' } }}>
           <Button variant="contained" color="secondary" startIcon={<RotateCcw size={17} />} onClick={reset}>

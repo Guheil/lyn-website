@@ -57,10 +57,10 @@ export function SiteHeader() {
     <>
       <StyledHeader className="site-header" data-home={isHome} data-solid={!isHome || hasScrolled || open}>
         <StyledInner>
-          <StyledBrand as={Link} href="/" aria-label="Lyn Bactad home">
+          <StyledBrand as={Link} href="/" aria-label="Lyn Bactad Property Group home">
             <StyledBrandMark>LB</StyledBrandMark>
             <StyledBrandText>
-              <strong>Lyn Bactad</strong>
+              <strong>Lyn Bactad Property Group</strong>
               <small>La Union Real Estate</small>
             </StyledBrandText>
           </StyledBrand>
@@ -112,7 +112,7 @@ export function SiteHeader() {
             <StyledHeaderAction href="/properties" variant="contained" onClick={() => setOpen(false)}>
               Explore properties
             </StyledHeaderAction>
-            <p className="mobile-note">Broker-led property assistance in La Union.</p>
+            <p className="mobile-note">La Union property listings and assigned broker support.</p>
           </StyledMobilePanel>
         </>
       )}

@@ -34,11 +34,11 @@ export function HomePage({ featured }: { featured: PublicProperty[] }) {
         <StyledHeroContent>
           <div className="hero-statement">
             <Typography variant="h1">
-              La Union,<br />seen clearly.
+              La Union real estate,<br />seen clearly.
             </Typography>
 
             <div className="hero-aside">
-              <Typography>Land, homes, and commercial property.</Typography>
+              <Typography>Land, homes, commercial spaces, and investment properties across La Union.</Typography>
               <Button href="/properties" variant="text" endIcon={<ArrowUpRight size={17} />}>
                 Explore properties
               </Button>
@@ -52,27 +52,27 @@ export function HomePage({ featured }: { featured: PublicProperty[] }) {
           <StyledProof>
             <div className="proof-copy">
               <span className="section-rule" aria-hidden="true" />
-              <Typography variant="h2">Real estate should feel clear before it feels urgent.</Typography>
+              <Typography variant="h2">Local property guidance starts with clear facts.</Typography>
               <Typography>
-                Lyn Bactad assists owners, buyers, and investors by organizing the facts that shape a property decision: location, access, measurements, price guidance, available records, and the next practical step.
+                Lyn Bactad Property Group connects buyers, sellers, property owners, and investors with assigned real estate brokers who understand La Union locations, access, property measurements, pricing, available records, and viewing requirements.
               </Typography>
-              <Button href="/about" variant="text" endIcon={<ArrowUpRight size={17} />}>Meet Lyn Bactad</Button>
+              <Button href="/about" variant="text" endIcon={<ArrowUpRight size={17} />}>About the property group</Button>
             </div>
 
             <StyledMetrics>
               <Link href="/about">
                 <span>01</span>
-                <div><strong>Broker-led assistance</strong><small>Direct, locally informed support from first inquiry to the next step.</small></div>
+                <div><strong>Assigned broker support</strong><small>Property inquiries are routed to a broker who can respond with relevant local and listing information.</small></div>
                 <ArrowUpRight size={18} />
               </Link>
               <Link href="/credentials">
                 <span>02</span>
-                <div><strong>Professional verification</strong><small>Credential information presented carefully for serious clients.</small></div>
+                <div><strong>Business credentials</strong><small>Review public-facing business registrations, permits, training records, and affiliations.</small></div>
                 <ArrowUpRight size={18} />
               </Link>
               <Link href="/properties">
                 <span>03</span>
-                <div><strong>Property-first presentation</strong><small>Clear listing information without inflated claims or unnecessary noise.</small></div>
+                <div><strong>La Union property listings</strong><small>Browse land, house-and-lot, residential, commercial, and investment opportunities.</small></div>
                 <ArrowUpRight size={18} />
               </Link>
             </StyledMetrics>
@@ -86,13 +86,13 @@ export function HomePage({ featured }: { featured: PublicProperty[] }) {
             <div className="image" role="img" aria-label="Contemporary property interior" />
             <div className="process-copy">
               <SectionHeading
-                title="A calm process for property questions that deserve careful answers."
-                description="Every inquiry starts with the real requirement, not a generic sales script. The goal is to clarify what is known, what still needs verification, and what action makes sense next."
+                title="A practical process for buying, selling, and listing property in La Union."
+                description="Each inquiry begins with the property type, location, budget or asking price, intended use, and available documents. The group then coordinates the inquiry with an appropriate property broker."
               />
               <div className="steps">
-                <div className="step"><span>01</span><strong>Define the requirement</strong><p>Buying, selling, leasing, investment review, or preparing a listing for the market.</p></div>
-                <div className="step"><span>02</span><strong>Organize the property facts</strong><p>Location, access, area, asking price, intended use, available records, and buyer questions.</p></div>
-                <div className="step"><span>03</span><strong>Coordinate the next move</strong><p>A viewing, inquiry response, presentation, documentation review, or marketing plan.</p></div>
+                <div className="step"><span>01</span><strong>Define the requirement</strong><p>Buying, selling, investing, or preparing land, a home, or commercial property for the market.</p></div>
+                <div className="step"><span>02</span><strong>Organize the property facts</strong><p>Confirm the location, access, lot and floor area, asking price, intended use, available records, and buyer questions.</p></div>
+                <div className="step"><span>03</span><strong>Coordinate the next move</strong><p>Coordinate a viewing, broker response, listing presentation, document review, or property marketing plan.</p></div>
               </div>
               <Stack direction="row" sx={{ gap: 2, mt: 4, flexWrap: 'wrap' }}>
                 <Button href="/services" variant="outlined">View the services</Button>
@@ -106,14 +106,14 @@ export function HomePage({ featured }: { featured: PublicProperty[] }) {
       <StyledSection>
         <StyledInner>
           <Stack direction={{ xs: 'column', md: 'row' }} sx={{ justifyContent: 'space-between', alignItems: { xs: 'flex-start', md: 'flex-end' }, gap: 3, mb: 5 }}>
-            <SectionHeading title="Featured properties, presented for informed inquiry." description="Published listings include the practical details available for public review. Additional information can be discussed directly." />
+            <SectionHeading title="Featured real estate listings in La Union." description="View selected land, residential, commercial, and investment properties with prices, locations, photos, specifications, and assigned broker contact details." />
             <Button href="/properties" variant="outlined" endIcon={<ArrowUpRight size={17} />}>Browse all listings</Button>
           </Stack>
           {featured.length ? (
             <PropertyGrid properties={featured} />
           ) : (
             <Typography color="text.secondary" sx={{ py: 8, borderTop: '1px solid', borderBottom: '1px solid', borderColor: 'divider' }}>
-              Featured properties will appear here after they are published and marked as featured in the dashboard.
+              Featured La Union property listings are being updated. Browse all properties or contact the group about current availability.
             </Typography>
           )}
         </StyledInner>
@@ -123,10 +123,10 @@ export function HomePage({ featured }: { featured: PublicProperty[] }) {
         <StyledInner>
           <div className="dark-grid">
             <span className="dark-rule" aria-hidden="true" />
-            <Typography variant="h2">A strong listing lets the buyer understand the place before the visit.</Typography>
+            <Typography variant="h2">Strong property marketing helps buyers understand the location before a site visit.</Typography>
             <div className="dark-copy">
               <Typography>
-                Useful photography, aerial context, accurate dimensions, access notes, and concise writing help serious buyers assess whether a property fits their needs.
+                Professional photography, drone views, accurate property dimensions, road access notes, and clear descriptions help buyers compare La Union properties before arranging a viewing.
               </Typography>
               <Button href="/services" variant="outlined" endIcon={<ArrowUpRight size={17} />}>See the marketing approach</Button>
             </div>
@@ -137,9 +137,9 @@ export function HomePage({ featured }: { featured: PublicProperty[] }) {
       <StyledSection sx={{ background: '#fff' }}>
         <StyledInner>
           <Stack direction={{ xs: 'column', lg: 'row' }} sx={{ justifyContent: 'space-between', gap: 5, mb: 4 }}>
-            <SectionHeading title="Support built around the property decision in front of you." />
+            <SectionHeading title="Real estate services for buyers, sellers, and property owners in La Union." />
             <Typography color="text.secondary" sx={{ maxWidth: 470, alignSelf: { lg: 'flex-end' } }}>
-              Choose the path that matches where you are now, whether you are preparing to sell, comparing options, or improving how a property is presented.
+              Get support for property selling, buying, listing preparation, land and commercial inquiries, photography, drone coverage, and property marketing.
             </Typography>
           </Stack>
           <StyledServiceGrid>
@@ -153,8 +153,8 @@ export function HomePage({ featured }: { featured: PublicProperty[] }) {
               <div className="service-overlay" />
               <div className="service-content">
                 <div>
-                  <h3>Sell with a clearer story.</h3>
-                  <p>Organize the property facts, presentation, and inquiry path serious buyers need.</p>
+                  <h3>Sell property with clearer listing information.</h3>
+                  <p>Prepare accurate property details, photos, location context, and a direct broker inquiry path.</p>
                 </div>
                 <span className="service-arrow" aria-hidden="true"><ArrowUpRight size={21} /></span>
               </div>
@@ -170,8 +170,8 @@ export function HomePage({ featured }: { featured: PublicProperty[] }) {
               <div className="service-overlay" />
               <div className="service-content">
                 <div>
-                  <h3>Buy with useful context.</h3>
-                  <p>Compare access, location, use, pricing, and the details that affect the decision.</p>
+                  <h3>Compare La Union properties with local context.</h3>
+                  <p>Review location, road access, intended use, pricing, property area, and available documents.</p>
                 </div>
                 <span className="service-arrow" aria-hidden="true"><ArrowUpRight size={21} /></span>
               </div>
@@ -187,8 +187,8 @@ export function HomePage({ featured }: { featured: PublicProperty[] }) {
               <div className="service-overlay" />
               <div className="service-content">
                 <div>
-                  <h3>Present the property properly.</h3>
-                  <p>Use photography, aerial views, video, and concise copy to reduce buyer guesswork.</p>
+                  <h3>Market property with professional visuals.</h3>
+                  <p>Use real estate photography, drone views, walkthrough video, and concise property descriptions.</p>
                 </div>
                 <span className="service-arrow" aria-hidden="true"><ArrowUpRight size={21} /></span>
               </div>

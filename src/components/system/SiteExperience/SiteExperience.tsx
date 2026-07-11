@@ -96,7 +96,7 @@ export function SiteExperience({ children }: { children: ReactNode }) {
             ))}
 
             <StyledIntroIdentity>
-              <strong>Lyn Bactad</strong>
+              <strong>Lyn Bactad Property Group</strong>
               <span aria-hidden="true" />
             </StyledIntroIdentity>
           </StyledIntroStage>

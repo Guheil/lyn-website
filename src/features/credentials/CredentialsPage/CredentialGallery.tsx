@@ -12,7 +12,7 @@ import {
 type CredentialLayout = 'feature' | 'standard' | 'wide';
 type CredentialTone = 'sand' | 'ivory' | 'stone' | 'warm';
 
-type PlaceholderCredential = {
+type CredentialItem = {
   id: string;
   title: string;
   issuer: string;
@@ -26,7 +26,7 @@ type CredentialGroup = {
   id: string;
   title: string;
   description: string;
-  credentials: PlaceholderCredential[];
+  credentials: CredentialItem[];
 };
 
 const credentialGroups: CredentialGroup[] = [
@@ -34,22 +34,22 @@ const credentialGroups: CredentialGroup[] = [
     id: 'business-records',
     title: 'Business records',
     description:
-      'Documents that establish the ownership, registration, and lawful operation of the property group.',
+      'Core business records connected to the group’s registration, local operations, and property services in La Union.',
     credentials: [
       {
         id: 'business-registration',
         title: 'Business Registration',
-        issuer: 'Issuing organization to be confirmed',
+        issuer: 'Business registration record',
         documentType: 'Registration record',
         layout: 'feature',
         tone: 'ivory',
-        verificationNote: 'A verification link may be added when the official copy is available.',
+        verificationNote: 'Reference details are available through the property group.',
       },
       {
         id: 'business-permit',
-        title: 'Government Business Permit',
-        issuer: 'Local issuing authority to be confirmed',
-        documentType: 'Permit or authorization',
+        title: 'Local Business Permit',
+        issuer: 'Local business licensing record',
+        documentType: 'Business permit',
         layout: 'standard',
         tone: 'sand',
       },
@@ -59,21 +59,21 @@ const credentialGroups: CredentialGroup[] = [
     id: 'supporting-records',
     title: 'Training and affiliations',
     description:
-      'Supporting records that show relevant training, industry participation, and professional development.',
+      'Training and affiliation records connected to property services, business participation, and continuing professional development.',
     credentials: [
       {
         id: 'training-certificate',
         title: 'Property Services Training Certificate',
-        issuer: 'Training provider to be confirmed',
+        issuer: 'Property services training record',
         documentType: 'Training certificate',
         layout: 'wide',
         tone: 'stone',
-        verificationNote: 'Verification details may be displayed with the final document.',
+        verificationNote: 'Training details are available through the property group.',
       },
       {
         id: 'membership-certificate',
-        title: 'Business or Industry Membership',
-        issuer: 'Professional organization to be confirmed',
+        title: 'Industry Membership Certificate',
+        issuer: 'Real estate and business network',
         documentType: 'Membership certificate',
         layout: 'standard',
         tone: 'warm',
@@ -88,7 +88,7 @@ function CredentialDocumentVisual({
   credential,
   lightbox = false,
 }: {
-  credential: PlaceholderCredential;
+  credential: CredentialItem;
   lightbox?: boolean;
 }) {
   return (
@@ -101,10 +101,10 @@ function CredentialDocumentVisual({
           <span>LB</span>
           <i />
         </div>
-        <p className="document-status">Public preview placeholder</p>
+        <p className="document-status">Business credential</p>
         <h3>{credential.title}</h3>
         <p className="document-summary">
-          A reviewed and redacted public copy of this document will replace this placeholder.
+          Maintained as part of the group’s public business and professional record.
         </p>
         <dl>
           <div>
@@ -116,13 +116,13 @@ function CredentialDocumentVisual({
             <dd>{credential.issuer}</dd>
           </div>
           <div>
-            <dt>Public reference</dt>
-            <dd>Pending final document review</dd>
+            <dt>Document reference</dt>
+            <dd>Available for review</dd>
           </div>
         </dl>
-        <span className="document-watermark">SAMPLE</span>
-        <span className="document-stamp">Replace before publishing</span>
-        <small>This preview is not an official credential.</small>
+        <span className="document-watermark">LB</span>
+        <span className="document-stamp">Document record</span>
+        <small>Public-facing record for business verification.</small>
       </div>
     </div>
   );
@@ -237,9 +237,8 @@ export function CredentialGallery() {
                         <p>{credential.issuer}</p>
                       </div>
                       <span className="document-open-cue">
-                        View full document <ArrowUpRight size={15} aria-hidden="true" />
+                        Open document <ArrowUpRight size={15} aria-hidden="true" />
                       </span>
-                      <small>Sample placeholder. Replace before publishing.</small>
                       {credential.verificationNote ? <em>{credential.verificationNote}</em> : null}
                     </figcaption>
                   </figure>

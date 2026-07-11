@@ -6,50 +6,77 @@ import { StyledBento, StyledInner, StyledProfile, StyledSection } from './elemen
 
 export function AboutPage() {
   const cards = [
-    ['Real estate', 'Broker / Salesperson', 'Assistance for clients preparing to sell, buy, market, or evaluate property opportunities.'],
-    ['Company', "EOFB Realty / J33 INT'L Trading & Dev. Corp.", 'Owner, Manager, and CEO.'],
-    ['Leadership', 'NREA La Union Chapter', 'President and active member of the local real estate community.'],
-    ['Community', 'SFC Multipurpose Credit Coop', 'Vice Chairman.'],
-    ['Former role', 'Legal Officer IV', 'NCIP Region I, San Fernando City.'],
-    ['Education', 'University of the Philippines', 'With additional education reference from DMMMSU-MLUC College of Law.'],
+    [
+      'Ownership',
+      'Lyn Bactad Property Group',
+      'Locally led real estate operations for property owners, buyers, sellers, and investors in La Union.',
+    ],
+    [
+      'Broker coordination',
+      'Assigned property brokers',
+      'Listing and buyer inquiries are routed to an appropriate broker with direct contact details on each property page.',
+    ],
+    [
+      'Business',
+      "EOFB Realty / J33 INT'L Trading & Dev. Corp.",
+      'Property-related business operations, client coordination, and marketing support.',
+    ],
+    [
+      'Property services',
+      'Buying, selling, and listing support',
+      'Assistance with property inquiries, listing preparation, viewings, presentation, and broker communication.',
+    ],
+    [
+      'Local focus',
+      'La Union, Philippines',
+      'Land, house-and-lot, residential, commercial, and investment property opportunities across the province.',
+    ],
+    [
+      'Public records',
+      'Business credentials and registrations',
+      'Public-facing business documents, permits, training records, and professional affiliations are available for review.',
+    ],
   ];
 
   return (
     <>
       <PageHero
-        label="About Lyn"
-        title="Real estate service led by local experience and careful client assistance."
-        description="Lyn Bactad leads EOFB Realty / J33 INT'L Trading & Dev. Corp. and assists clients with property selling, buying, listing, and consultation in La Union."
+        title="A locally led property group serving La Union."
+        description="Lyn Bactad Property Group coordinates property listings, client inquiries, assigned brokers, and real estate marketing for buyers, sellers, owners, and investors across La Union."
         image="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2000&q=84"
       />
+
       <StyledSection>
         <StyledInner>
           <StyledProfile>
-            <div className="photo" />
+            <div className="photo" role="img" aria-label="Lyn Bactad Property Group in La Union" />
             <div>
-              <Typography variant="h2" sx={{ fontSize: 'clamp(2.2rem,4vw,4.5rem)' }}>Lyn Bactad</Typography>
+              <Typography variant="h2" sx={{ fontSize: 'clamp(2.2rem,4vw,4.5rem)' }}>
+                Lyn Bactad
+              </Typography>
               <Typography color="primary.dark" sx={{ fontWeight: 700, mt: 1 }}>
-                Owner / Manager / CEO, EOFB Realty / J33 INT&apos;L Trading &amp; Dev. Corp.
+                Property group owner and business manager
               </Typography>
               <Typography color="text.secondary" sx={{ mt: 3 }}>
-                Lyn Bactad is a real estate broker/salesperson and the owner, manager, and CEO of EOFB Realty / J33 INT&apos;L Trading &amp; Dev. Corp. Her work supports clients who are selling, buying, listing, or evaluating property opportunities in La Union.
+                Lyn Bactad leads the property group and oversees client coordination, property presentation, business operations, and inquiry routing for real estate opportunities in La Union.
               </Typography>
               <Typography color="text.secondary" sx={{ mt: 2 }}>
-                Her professional profile includes leadership in the local real estate community as President of the NREA La Union Chapter, along with service as Vice Chairman of SFC Multipurpose Credit Coop.
+                Property-specific inquiries are handled by assigned brokers. Their names, service areas, mobile numbers, email addresses, and available contact channels appear on the relevant property detail pages.
               </Typography>
               <Typography color="text.secondary" sx={{ mt: 2 }}>
-                Her previous work as Legal Officer IV at NCIP Region I in San Fernando City adds valuable familiarity with land-related processes and documentation concerns. Real estate assistance on this website is presented as brokerage and client guidance, not legal advice.
+                The group supports property owners preparing to sell, buyers comparing locations, investors reviewing land or commercial opportunities, and clients who need clearer listing media and property information.
               </Typography>
               <Button href="/credentials" endIcon={<ArrowUpRight size={17} />} sx={{ mt: 3, px: 0 }}>
-                Review public credentials
+                Review business credentials
               </Button>
             </div>
           </StyledProfile>
         </StyledInner>
       </StyledSection>
+
       <StyledSection sx={{ background: '#fff' }}>
         <StyledInner>
-          <SectionHeading label="Professional background" title="Experience across real estate, leadership, and documentation-aware service." />
+          <SectionHeading title="Property leadership, broker coordination, and local real estate support." />
           <StyledBento>
             {cards.map(([label, title, body]) => (
               <article key={title}>
