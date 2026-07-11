@@ -1,7 +1,9 @@
 import type { PropertyDocument, PublicProperty } from './property.types';
 
 function stringValue(value: unknown, fallback = ''): string {
-  return typeof value === 'string' && value.trim() ? value.trim() : fallback;
+  if (typeof value === 'string' && value.trim()) return value.trim();
+  if (typeof value === 'number' && Number.isFinite(value)) return String(value);
+  return fallback;
 }
 
 function stringList(value: unknown): string[] {
@@ -24,31 +26,54 @@ function imageList(value: unknown): string[] {
   });
 }
 
-function identifier(value: unknown): string {
-  if (typeof value === 'string' && value) return value;
-  if (value && typeof value === 'object' && 'toHexString' in value) {
-    const toHexString = (value as { toHexString?: unknown }).toHexString;
-    if (typeof toHexString === 'function') return toHexString.call(value);
+function identifier(value: unknown, fallback: string): string {
+  if (typeof value === 'string' && value.trim()) return value.trim();
+
+  if (value && typeof value === 'object') {
+    if ('toHexString' in value) {
+      const toHexString = (value as { toHexString?: unknown }).toHexString;
+      if (typeof toHexString === 'function') {
+        try {
+          return toHexString.call(value);
+        } catch {
+          // Continue to the Extended JSON check below.
+        }
+      }
+    }
+
+    if ('$oid' in value) {
+      const oid = (value as { $oid?: unknown }).$oid;
+      if (typeof oid === 'string' && oid.trim()) return oid.trim();
+    }
   }
-  throw new Error('Property identifier is missing.');
+
+  // A missing or nonstandard legacy _id should not make a public listing fail.
+  return fallback || 'property';
 }
 
 function isoDate(value: unknown): string | null {
   if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toISOString();
+
+  if (value && typeof value === 'object' && '$date' in value) {
+    return isoDate((value as { $date?: unknown }).$date);
+  }
+
   if (typeof value === 'string' || typeof value === 'number') {
     const parsed = new Date(value);
     return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
   }
+
   return null;
 }
 
 export function mapPublicProperty(document: PropertyDocument): PublicProperty {
   const raw = document as PropertyDocument & Record<string, unknown>;
+  const slug = stringValue(raw.slug);
 
   return {
-    id: identifier(raw._id),
+    id: identifier(raw._id, slug),
     title: stringValue(raw.title, 'Untitled property'),
-    slug: stringValue(raw.slug),
+    slug,
     propertyType: stringValue(raw.propertyType, 'Property'),
     location: stringValue(raw.location, 'La Union'),
     price: stringValue(raw.price, 'Price upon request'),
