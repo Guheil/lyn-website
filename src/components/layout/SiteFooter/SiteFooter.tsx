@@ -40,7 +40,10 @@ export function SiteFooter() {
       </StyledFooterGrid>
       <StyledFooterBottom>
         <span>© {new Date().getFullYear()} Lyn Bactad Property Group. All rights reserved.</span>
-        <span>La Union real estate and property services.</span>
+        <nav aria-label="Legal">
+          <Link href="/terms">Terms of Use</Link>
+          <Link href="/privacy">Privacy Policy</Link>
+        </nav>
       </StyledFooterBottom>
     </StyledFooter>
   );

@@ -41,6 +41,8 @@ export const StyledFooterBottom = styled('div')(({ theme }) => ({
   color: 'rgba(255,255,255,.56)',
   fontSize: '.86rem',
   gap: 16,
+  '& nav': { display: 'flex', flexWrap: 'wrap', gap: 18 },
+  '& a': { color: 'inherit', textDecoration: 'none', '&:hover': { color: '#fff' } },
   [theme.breakpoints.down('sm')]: {
     flexDirection: 'column',
     marginTop: 36,

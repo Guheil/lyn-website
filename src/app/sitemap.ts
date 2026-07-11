@@ -12,6 +12,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${siteUrl}/services`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${siteUrl}/credentials`, changeFrequency: 'monthly', priority: 0.6 },
     { url: `${siteUrl}/contact`, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${siteUrl}/terms`, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${siteUrl}/privacy`, changeFrequency: 'yearly', priority: 0.3 },
   ];
 
   if (!process.env.MONGODB_URI || !process.env.MONGODB_DB_NAME) return staticPages;
