@@ -86,6 +86,7 @@ function mapBroker(value: unknown): PublicPropertyBroker | null {
     whatsappUrl: safePublicUrl(raw.whatsappUrl),
     facebookUrl: safePublicUrl(raw.facebookUrl),
     serviceArea: stringValue(raw.serviceArea),
+    profileImage: safePublicUrl(raw.profileImage, true),
     isPlaceholder: raw.isPlaceholder === true,
   };
 }
@@ -106,6 +107,11 @@ export function mapPublicProperty(document: PropertyDocument): PublicProperty {
     shortDescription: stringValue(raw.shortDescription, 'Further property details are available upon request.'),
     features: stringList(raw.features),
     images: imageList(raw.images),
+    imageAltText: imageList(raw.images).map((_, index) => stringList(raw.imageAltText)[index] || `${stringValue(raw.title, 'Property')} photo ${index + 1}`),
+    availability: ['available','reserved','sold','off-market'].includes(String(raw.availability)) ? raw.availability as PublicProperty['availability'] : 'available',
+    assignedBrokerId: stringValue(raw.assignedBrokerId),
+    seoTitle: stringValue(raw.seoTitle),
+    seoDescription: stringValue(raw.seoDescription),
     broker: mapBroker(raw.broker),
     isFeatured: raw.isFeatured === true,
     publishedAt: isoDate(raw.publishedAt),

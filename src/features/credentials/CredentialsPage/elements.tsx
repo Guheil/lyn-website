@@ -200,6 +200,7 @@ export const StyledCredentialGroup = styled('section')(({ theme }) => ({
     transform: 'translateY(-4px)',
     boxShadow: '0 32px 72px rgba(35,29,20,.16)',
   },
+  '& .document-preview > img': { width: '100%', height: '100%', display: 'block', objectFit: 'contain', background: '#f7f4ed' },
   '& .document-preview-feature, & .document-preview-standard': { aspectRatio: '3 / 4' },
   '& .document-preview-wide': { aspectRatio: '10 / 7' },
   '& .document-tone-sand': { background: '#d8cebc' },

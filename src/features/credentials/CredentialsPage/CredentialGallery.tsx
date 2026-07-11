@@ -1,7 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowUpRight, ChevronLeft, ChevronRight, ExternalLink, X } from 'lucide-react';
+import type { PublicCredential } from '@/server/modules/credentials';
 import {
   StyledCredentialGroup,
   StyledCredentialLightbox,
@@ -9,237 +10,148 @@ import {
   StyledCredentialRegister,
 } from './elements';
 
-type CredentialLayout = 'feature' | 'standard' | 'wide';
-type CredentialTone = 'sand' | 'ivory' | 'stone' | 'warm';
+type Layout = 'feature' | 'standard' | 'wide';
+type Tone = 'sand' | 'ivory' | 'stone' | 'warm';
+type Item = PublicCredential & { layout: Layout; tone: Tone };
 
-type CredentialItem = {
-  id: string;
-  title: string;
-  issuer: string;
-  documentType: string;
-  layout: CredentialLayout;
-  tone: CredentialTone;
-  verificationNote?: string;
-};
-
-type CredentialGroup = {
-  id: string;
-  title: string;
-  description: string;
-  credentials: CredentialItem[];
-};
-
-const credentialGroups: CredentialGroup[] = [
-  {
-    id: 'business-records',
-    title: 'Business records',
-    description:
-      'Core business records connected to the group’s registration, local operations, and property services in La Union.',
-    credentials: [
-      {
-        id: 'business-registration',
-        title: 'Business Registration',
-        issuer: 'Business registration record',
-        documentType: 'Registration record',
-        layout: 'feature',
-        tone: 'ivory',
-        verificationNote: 'Reference details are available through the property group.',
-      },
-      {
-        id: 'business-permit',
-        title: 'Local Business Permit',
-        issuer: 'Local business licensing record',
-        documentType: 'Business permit',
-        layout: 'standard',
-        tone: 'sand',
-      },
-    ],
-  },
-  {
-    id: 'supporting-records',
-    title: 'Training and affiliations',
-    description:
-      'Training and affiliation records connected to property services, business participation, and continuing professional development.',
-    credentials: [
-      {
-        id: 'training-certificate',
-        title: 'Property Services Training Certificate',
-        issuer: 'Property services training record',
-        documentType: 'Training certificate',
-        layout: 'wide',
-        tone: 'stone',
-        verificationNote: 'Training details are available through the property group.',
-      },
-      {
-        id: 'membership-certificate',
-        title: 'Industry Membership Certificate',
-        issuer: 'Real estate and business network',
-        documentType: 'Membership certificate',
-        layout: 'standard',
-        tone: 'warm',
-      },
-    ],
-  },
+const fallback: PublicCredential[] = [
+  { id: 'business-registration', title: 'Business Registration', issuingOrganization: 'Business registration record', category: 'registration', imageUrl: '', altText: 'Business registration record', verificationUrl: '', displayOrder: 1 },
+  { id: 'local-permit', title: 'Local Business Permit', issuingOrganization: 'Local business licensing record', category: 'permit', imageUrl: '', altText: 'Local business permit record', verificationUrl: '', displayOrder: 2 },
+  { id: 'training', title: 'Property Services Training Certificate', issuingOrganization: 'Property services training record', category: 'certification', imageUrl: '', altText: 'Property services training certificate', verificationUrl: '', displayOrder: 3 },
+  { id: 'membership', title: 'Industry Membership Certificate', issuingOrganization: 'Real estate and business network', category: 'membership', imageUrl: '', altText: 'Industry membership certificate', verificationUrl: '', displayOrder: 4 },
 ];
 
-const credentials = credentialGroups.flatMap((group) => group.credentials);
+const categoryNames: Record<PublicCredential['category'], string> = {
+  license: 'Licenses',
+  registration: 'Registrations',
+  permit: 'Permits',
+  certification: 'Training and certifications',
+  membership: 'Professional affiliations',
+  other: 'Other business records',
+};
+const tones: Tone[] = ['ivory', 'sand', 'stone', 'warm'];
 
-function CredentialDocumentVisual({
-  credential,
-  lightbox = false,
-}: {
-  credential: CredentialItem;
-  lightbox?: boolean;
-}) {
+function enrich(rows: PublicCredential[]): Item[] {
+  const list = rows.length ? rows : fallback;
+  return list.map((row, index) => ({
+    ...row,
+    layout: index % 3 === 0 ? 'feature' : index % 3 === 2 ? 'wide' : 'standard',
+    tone: tones[index % tones.length],
+  }));
+}
+
+function Visual({ item, lightbox = false }: { item: Item; lightbox?: boolean }) {
+  if (item.imageUrl) {
+    return (
+      <div className={`document-preview document-preview-${item.layout} document-tone-${item.tone}${lightbox ? ' is-lightbox' : ''}`}>
+        {/* The document keeps its natural ratio. The source is a protected WebP route shared with the dashboard. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={item.imageUrl} alt={item.altText} loading={lightbox ? 'eager' : 'lazy'} />
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`document-preview document-preview-${credential.layout} document-tone-${credential.tone}${lightbox ? ' is-lightbox' : ''}`}
-      aria-hidden="true"
-    >
+    <div className={`document-preview document-preview-${item.layout} document-tone-${item.tone}${lightbox ? ' is-lightbox' : ''}`} aria-hidden="true">
       <div className="document-page">
-        <div className="document-brand">
-          <span>LB</span>
-          <i />
-        </div>
+        <div className="document-brand"><span>LB</span><i /></div>
         <p className="document-status">Business credential</p>
-        <h3>{credential.title}</h3>
-        <p className="document-summary">
-          Maintained as part of the group’s public business and professional record.
-        </p>
+        <h3>{item.title}</h3>
+        <p className="document-summary">Maintained as part of the group’s public business and professional record.</p>
         <dl>
-          <div>
-            <dt>Document type</dt>
-            <dd>{credential.documentType}</dd>
-          </div>
-          <div>
-            <dt>Issuing body</dt>
-            <dd>{credential.issuer}</dd>
-          </div>
-          <div>
-            <dt>Document reference</dt>
-            <dd>Available for review</dd>
-          </div>
+          <div><dt>Document type</dt><dd>{categoryNames[item.category]}</dd></div>
+          <div><dt>Issuing body</dt><dd>{item.issuingOrganization}</dd></div>
+          <div><dt>Document reference</dt><dd>Available for review</dd></div>
         </dl>
         <span className="document-watermark">LB</span>
         <span className="document-stamp">Document record</span>
-        <small>Public-facing record for business verification.</small>
       </div>
     </div>
   );
 }
 
-export function CredentialGallery() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const openerRefs = useRef<Array<HTMLButtonElement | null>>([]);
+export function CredentialGallery({ items: rows }: { items: PublicCredential[] }) {
+  const items = useMemo(() => enrich(rows), [rows]);
+  const groups = useMemo(() => Object.entries(items.reduce<Record<string, Item[]>>((accumulator, item) => {
+    accumulator[item.category] ??= [];
+    accumulator[item.category].push(item);
+    return accumulator;
+  }, {})), [items]);
+  const itemCount = items.length;
+  const [open, setOpen] = useState<number | null>(null);
+  const dialog = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const openers = useRef<Array<HTMLButtonElement | null>>([]);
 
   const close = useCallback(() => {
-    setOpenIndex((current) => {
-      if (current !== null) {
-        window.setTimeout(() => openerRefs.current[current]?.focus(), 0);
-      }
+    setOpen((current) => {
+      if (current !== null) window.setTimeout(() => openers.current[current]?.focus(), 0);
       return null;
     });
   }, []);
-
   const previous = useCallback(() => {
-    setOpenIndex((current) => {
-      if (current === null) return current;
-      return (current - 1 + credentials.length) % credentials.length;
-    });
-  }, []);
-
+    setOpen((current) => current === null ? current : (current - 1 + itemCount) % itemCount);
+  }, [itemCount]);
   const next = useCallback(() => {
-    setOpenIndex((current) => {
-      if (current === null) return current;
-      return (current + 1) % credentials.length;
-    });
-  }, []);
+    setOpen((current) => current === null ? current : (current + 1) % itemCount);
+  }, [itemCount]);
 
   useEffect(() => {
-    if (openIndex === null) return;
-
-    const previousOverflow = document.body.style.overflow;
+    if (open === null) return;
+    const overflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    closeButtonRef.current?.focus();
+    closeRef.current?.focus();
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        close();
-        return;
-      }
-      if (event.key === 'ArrowLeft') {
-        event.preventDefault();
-        previous();
-        return;
-      }
-      if (event.key === 'ArrowRight') {
-        event.preventDefault();
-        next();
-        return;
-      }
-      if (event.key !== 'Tab') return;
-
-      const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
-        'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
-      );
-      if (!focusable?.length) return;
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { event.preventDefault(); close(); }
+      else if (event.key === 'ArrowLeft') { event.preventDefault(); previous(); }
+      else if (event.key === 'ArrowRight') { event.preventDefault(); next(); }
+      else if (event.key === 'Tab') {
+        const focusable = dialog.current?.querySelectorAll<HTMLElement>('button:not([disabled]),a[href]');
+        if (!focusable?.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
       }
     };
 
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keydown', handleKey);
     return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = overflow;
+      window.removeEventListener('keydown', handleKey);
     };
-  }, [close, next, openIndex, previous]);
+  }, [open, close, previous, next]);
 
-  const active = openIndex === null ? null : credentials[openIndex];
+  const active = open === null ? null : items[open];
+
   return (
     <>
       <StyledCredentialRegister>
-        {credentialGroups.map((group) => (
-          <StyledCredentialGroup key={group.id}>
+        {groups.map(([category, group]) => (
+          <StyledCredentialGroup key={category}>
             <header>
-              <h2>{group.title}</h2>
-              <p>{group.description}</p>
+              <h2>{categoryNames[category as PublicCredential['category']]}</h2>
+              <p>Public-facing records presented for business verification and client confidence.</p>
             </header>
             <div className="credential-documents">
-              {group.credentials.map((credential) => {
-                const index = credentials.findIndex((item) => item.id === credential.id);
+              {group.map((item) => {
+                const index = items.findIndex((candidate) => candidate.id === item.id);
                 return (
-                  <figure key={credential.id} className={credential.layout}>
+                  <figure key={item.id} className={item.layout}>
                     <button
-                      ref={(node) => {
-                        openerRefs.current[index] = node;
-                      }}
+                      ref={(node) => { openers.current[index] = node; }}
                       type="button"
                       className="credential-document-button"
-                      onClick={() => setOpenIndex(index)}
-                      aria-label={`Enlarge ${credential.title}`}
+                      onClick={() => setOpen(index)}
+                      aria-label={`Enlarge ${item.title}`}
                     >
-                      <CredentialDocumentVisual credential={credential} />
+                      <Visual item={item} />
                     </button>
                     <figcaption>
-                      <div>
-                        <h3>{credential.title}</h3>
-                        <p>{credential.issuer}</p>
-                      </div>
-                      <span className="document-open-cue">
-                        Open document <ArrowUpRight size={15} aria-hidden="true" />
-                      </span>
-                      {credential.verificationNote ? <em>{credential.verificationNote}</em> : null}
+                      <div><h3>{item.title}</h3><p>{item.issuingOrganization}</p></div>
+                      <span className="document-open-cue">Open document <ArrowUpRight size={15} /></span>
+                      {item.verificationUrl ? <a href={item.verificationUrl} target="_blank" rel="noopener noreferrer">Verify record <ExternalLink size={14} /></a> : null}
                     </figcaption>
                   </figure>
                 );
@@ -251,40 +163,24 @@ export function CredentialGallery() {
 
       {active ? (
         <StyledCredentialLightbox
-          ref={dialogRef}
+          ref={dialog}
           role="dialog"
           aria-modal="true"
           aria-label={`${active.title} enlarged view`}
           data-lenis-prevent
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) close();
-          }}
+          onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}
         >
-          <button
-            ref={closeButtonRef}
-            type="button"
-            className="close"
-            onClick={close}
-            aria-label="Close enlarged credential"
-          >
-            <X size={22} />
-          </button>
-          <button type="button" className="previous" onClick={previous} aria-label="Previous credential">
-            <ChevronLeft size={24} />
-          </button>
+          <button ref={closeRef} type="button" className="close" onClick={close} aria-label="Close enlarged document"><X size={22} /></button>
+          <button type="button" className="previous" onClick={previous} aria-label="Previous document"><ChevronLeft size={24} /></button>
           <StyledCredentialLightboxDocument>
-            <CredentialDocumentVisual credential={active} lightbox />
+            <Visual item={active} lightbox />
             <div className="lightbox-caption">
               <strong>{active.title}</strong>
-              <span>{active.issuer}</span>
-              <small>
-                {openIndex! + 1} / {credentials.length}
-              </small>
+              <span>{active.issuingOrganization}</span>
+              <small>{open! + 1} / {itemCount}</small>
             </div>
           </StyledCredentialLightboxDocument>
-          <button type="button" className="next" onClick={next} aria-label="Next credential">
-            <ChevronRight size={24} />
-          </button>
+          <button type="button" className="next" onClick={next} aria-label="Next document"><ChevronRight size={24} /></button>
         </StyledCredentialLightbox>
       ) : null}
     </>

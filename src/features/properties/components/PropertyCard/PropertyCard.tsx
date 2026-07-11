@@ -4,6 +4,10 @@ import { Stack, Typography } from '@mui/material';
 import type { PropertyCardProps } from './interface';
 import { StyledBody, StyledCard, StyledMedia } from './elements';
 
+function availabilityLabel(value: PropertyCardProps['property']['availability']) {
+  return { available: 'Available', reserved: 'Reserved', sold: 'Sold', 'off-market': 'Off market' }[value];
+}
+
 const placeholder = 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1400&q=84';
 
 export function PropertyCard({ property }: PropertyCardProps) {
@@ -22,6 +26,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
             decoding="async"
           />
           <span className="property-index">{property.isFeatured ? 'Featured' : property.propertyType}</span>
+          <span className="property-availability">{availabilityLabel(property.availability)}</span>
           <span className="property-arrow"><ArrowUpRight size={18} /></span>
         </StyledMedia>
         <StyledBody>

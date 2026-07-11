@@ -6,6 +6,7 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import { propertyGroupProfile } from '@/constants/broker';
 import { absoluteUrl, siteConfig } from '@/constants/site';
 import { PropertyGallery } from '@/features/properties/components/PropertyGallery';
+import { PropertyViewTracker } from '@/features/properties/components/PropertyViewTracker';
 import { publicPropertyService } from '@/server/modules/properties';
 
 export const dynamic = 'force-dynamic';
@@ -24,6 +25,24 @@ function emailHref(value: string | undefined): string {
 function priceValue(value: string): number | null {
   const numeric = Number(value.replace(/[^\d.]/g, ''));
   return Number.isFinite(numeric) && numeric > 0 ? numeric : null;
+}
+
+function availabilityLabel(value: 'available' | 'reserved' | 'sold' | 'off-market'): string {
+  return {
+    available: 'Available',
+    reserved: 'Reserved',
+    sold: 'Sold',
+    'off-market': 'Off market',
+  }[value];
+}
+
+function schemaAvailability(value: 'available' | 'reserved' | 'sold' | 'off-market'): string {
+  return {
+    available: 'https://schema.org/InStock',
+    reserved: 'https://schema.org/LimitedAvailability',
+    sold: 'https://schema.org/SoldOut',
+    'off-market': 'https://schema.org/Discontinued',
+  }[value];
 }
 
 function descriptionFor(property: {
@@ -51,12 +70,12 @@ export async function generateMetadata({
       };
     }
 
-    const description = descriptionFor(property);
+    const description = property.seoDescription || descriptionFor(property);
     const canonical = `/properties/${property.slug}`;
     const images = property.images.length ? property.images : [siteConfig.defaultImage];
 
     return {
-      title: property.title,
+      title: property.seoTitle || property.title,
       description,
       alternates: { canonical },
       openGraph: {
@@ -114,6 +133,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       .join('') || 'RE';
 
   const facts = [
+    { label: 'Availability', value: availabilityLabel(property.availability) },
     { label: 'Property type', value: property.propertyType || 'Property' },
     { label: 'Location', value: property.location || 'La Union' },
     { label: 'Lot area', value: property.lotArea || 'Available upon inquiry' },
@@ -125,10 +145,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     { label: 'Service area', value: broker?.serviceArea || '' },
   ].filter((item) => item.value);
 
-  const propertyReference = broker
-    ? `${property.title} | Assigned broker: ${brokerName}`
-    : property.title;
-  const inquiryHref = `/contact?property=${encodeURIComponent(propertyReference.slice(0, 180))}`;
+  const inquiryHref = `/contact?property=${encodeURIComponent(property.slug)}`;
   const phoneHref = telephoneHref(broker?.mobile);
   const brokerEmailHref = emailHref(broker?.email);
   const canonicalUrl = absoluteUrl(`/properties/${property.slug}`);
@@ -187,7 +204,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           url: canonicalUrl,
           price: numericPrice,
           priceCurrency: 'PHP',
-          availability: 'https://schema.org/InStock',
+          availability: schemaAvailability(property.availability),
           businessFunction: 'https://purl.org/goodrelations/v1#Sell',
         }
       : undefined,
@@ -211,6 +228,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         bgcolor: 'background.default',
       }}
     >
+      <PropertyViewTracker slug={property.slug} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(listingJsonLd).replace(/</g, '\\u003c') }}
@@ -253,17 +271,34 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           }}
         >
           <Box>
-            <Typography
-              sx={{
-                fontSize: '0.82rem',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: 'text.secondary',
-                mb: 2,
-              }}
-            >
-              {property.propertyType} in La Union
-            </Typography>
+            <Stack direction="row" sx={{ alignItems: 'center', gap: 1.5, flexWrap: 'wrap', mb: 2 }}>
+              <Typography
+                sx={{
+                  fontSize: '0.82rem',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: 'text.secondary',
+                }}
+              >
+                {property.propertyType} in La Union
+              </Typography>
+              <Box
+                component="span"
+                sx={{
+                  px: 1.1,
+                  py: 0.55,
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  bgcolor: 'background.paper',
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {availabilityLabel(property.availability)}
+              </Box>
+            </Stack>
             <Typography
               variant="h1"
               sx={{

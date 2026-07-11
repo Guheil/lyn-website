@@ -1,52 +1,52 @@
-# Real Estado Public Website
+# Lyn Bactad La Union Real Estate Website
 
-A separate public-facing Next.js + TypeScript + MUI website converted from the supplied static HTML/CSS/JS project. It is intentionally separate from the dashboard project while using the same MongoDB Atlas database and `properties` collection.
+This is the public website connected to the Lyn Bactad Property Group dashboard.
 
-## Included routes
+## Data managed by the dashboard
 
-- `/`
-- `/about`
-- `/properties`
-- `/properties/[slug]`
-- `/services`
-- `/credentials`
-- `/contact`
-- `GET /api/properties`
-- `GET /api/properties/[slug]`
-- `POST /api/inquiries`
+- Published properties and availability
+- Property image galleries
+- Assigned broker information and contact methods
+- Business credentials
+- Website inquiries
+- Property-detail view totals used in dashboard reports
 
-## Setup
+The homepage, About page, Services page, visual design, intro animation, header behavior, and fixed marketing content remain in the website code.
+
+## Environment
+
+Copy `.env.example` to `.env.local`:
+
+```env
+MONGODB_URI=mongodb+srv://...
+MONGODB_DB_NAME=lyn_bactad_real_estate
+APP_URL=http://localhost:3000
+PROPERTY_PAGE_SIZE=6
+REVALIDATION_SECRET=use-the-same-secret-as-the-dashboard
+```
+
+The MongoDB database name and revalidation secret must match the dashboard.
+
+## Install and run
 
 ```bash
 npm install
-Copy-Item .env.example .env.local
 npm run dev
 ```
 
-Fill `.env.local` with the same `MONGODB_URI` and `MONGODB_DB_NAME` used by the dashboard.
+## Connected behavior
 
-## Property visibility
+- Only published properties appear publicly.
+- Current broker details are read from the shared broker record.
+- Inquiry assignment is decided by the server from the property slug; hidden browser fields are not trusted.
+- Only published credentials that passed the privacy check appear publicly.
+- Shared WebP images are served from MongoDB GridFS.
+- A property view is counted once per browser session without storing personal visitor information.
 
-Only records where `status` is `published` are shown publicly. Featured homepage listings must also have `isFeatured: true`.
+## Checks
 
-## Pagination
-
-The public property list is paginated in MongoDB, not after loading every record. Set `PROPERTY_PAGE_SIZE` in `.env.local`; the default is 6.
-
-Examples:
-
-- `/properties?page=2`
-- `/properties?type=Land&page=1`
-
-## Inquiry flow
-
-The contact form creates records in the shared `inquiries` collection with:
-
-- `source: "Website"`
-- `status: "new"`
-
-The API validates strict plain-text fields, rejects HTML delimiters, uses server-built MongoDB documents, checks same-origin submissions, limits body size, includes a honeypot, and applies basic per-IP throttling. Production deployments should also add a distributed rate limiter at the hosting or edge layer.
-
-## Dependency versions
-
-`package.json` and `package-lock.json` use the same Next.js, React, MUI, Emotion, MongoDB, Zod, Lucide, TypeScript, and ESLint versions as the supplied secure dashboard project.
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```

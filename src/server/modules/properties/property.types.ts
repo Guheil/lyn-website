@@ -11,6 +11,7 @@ export interface PropertyBrokerDocument {
   whatsappUrl?: string;
   facebookUrl?: string;
   serviceArea?: string;
+  profileImage?: string;
   isPlaceholder?: boolean;
 }
 
@@ -23,6 +24,7 @@ export interface PublicPropertyBroker {
   whatsappUrl: string;
   facebookUrl: string;
   serviceArea: string;
+  profileImage: string;
   isPlaceholder: boolean;
 }
 
@@ -32,6 +34,7 @@ export interface PropertyDocument {
   slug: string;
   propertyType: string;
   status: PropertyPublishingStatus;
+  availability?: 'available' | 'reserved' | 'sold' | 'off-market';
   location: string;
   price: string;
   lotArea: string;
@@ -39,6 +42,10 @@ export interface PropertyDocument {
   shortDescription: string;
   features: string[];
   images: string[];
+  imageAltText?: string[];
+  assignedBrokerId?: string;
+  seoTitle?: string;
+  seoDescription?: string;
   broker?: PropertyBrokerDocument | null;
   isFeatured: boolean;
   publishedAt: Date | null;
@@ -58,6 +65,11 @@ export interface PublicProperty {
   shortDescription: string;
   features: string[];
   images: string[];
+  imageAltText: string[];
+  availability: 'available' | 'reserved' | 'sold' | 'off-market';
+  assignedBrokerId: string;
+  seoTitle: string;
+  seoDescription: string;
   broker: PublicPropertyBroker | null;
   isFeatured: boolean;
   publishedAt: string | null;
