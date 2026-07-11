@@ -19,7 +19,6 @@ export const StyledServiceEditorial = styled('div')(({ theme }) => ({
     gridTemplateColumns: 'minmax(0,1.05fr) minmax(390px,.95fr)',
     minHeight: 620,
     borderBottom: `1px solid ${theme.palette.divider}`,
-    paddingBottom: '4rem'
   },
   '& .service-row--reverse': { gridTemplateColumns: 'minmax(390px,.95fr) minmax(0,1.05fr)' },
   '& .service-row--reverse .service-image': { order: 2 },

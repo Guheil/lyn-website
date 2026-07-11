@@ -36,7 +36,10 @@ export const StyledHeroMedia = styled('div')(({ theme }) => ({
     content: '""',
     position: 'absolute',
     inset: 0,
-    background: 'linear-gradient(90deg, rgba(13,14,12,.7) 0%, rgba(13,14,12,.37) 50%, rgba(13,14,12,.48) 100%), linear-gradient(0deg, rgba(13,14,12,.72) 0%, rgba(13,14,12,.03) 55%)',
+    background: [
+      'linear-gradient(180deg, rgba(8,9,8,.48) 0%, rgba(8,9,8,.06) 28%, rgba(8,9,8,.08) 58%, rgba(8,9,8,.76) 100%)',
+      'linear-gradient(90deg, rgba(8,9,8,.28) 0%, rgba(8,9,8,.05) 48%, rgba(8,9,8,.12) 100%)',
+    ].join(','),
   },
   [theme.breakpoints.down('md')]: {
     '& iframe': {
@@ -46,7 +49,9 @@ export const StyledHeroMedia = styled('div')(({ theme }) => ({
       minHeight: '100%',
       transform: 'translate(-50%,-50%) scale(1.58)',
     },
-    '&::after': { background: 'linear-gradient(0deg, rgba(13,14,12,.82) 0%, rgba(13,14,12,.2) 72%)' },
+    '&::after': {
+      background: 'linear-gradient(180deg, rgba(8,9,8,.52) 0%, rgba(8,9,8,.08) 35%, rgba(8,9,8,.18) 58%, rgba(8,9,8,.86) 100%)',
+    },
   },
 }));
 
@@ -55,76 +60,65 @@ export const StyledHeroContent = styled('div')(({ theme }) => ({
   maxWidth: 1440,
   minHeight: '100svh',
   margin: '0 auto',
-  padding: 'clamp(156px,19vh,220px) 0 30px',
+  padding: 'clamp(140px,16vh,188px) 0 clamp(34px,5vh,64px)',
   display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  gap: 80,
-  '& .hero-copy': { maxWidth: 900 },
+  alignItems: 'flex-end',
+  '& .hero-statement': {
+    width: '100%',
+    display: 'grid',
+    gridTemplateColumns: 'minmax(0,1fr) minmax(270px,360px)',
+    alignItems: 'end',
+    gap: 'clamp(44px,8vw,130px)',
+    paddingTop: 'clamp(24px,3vw,40px)',
+    borderTop: '1px solid rgba(255,255,255,.34)',
+  },
   '& h1': {
-    maxWidth: 880,
+    maxWidth: 650,
     margin: 0,
     color: '#fff',
-    fontSize: 'clamp(3.5rem,7.7vw,7.8rem)',
+    fontSize: 'clamp(3.7rem,6.1vw,6.4rem)',
     letterSpacing: '-.055em',
   },
-  '& .hero-description': {
-    maxWidth: 680,
-    marginTop: 28,
-    color: 'rgba(255,255,255,.8)',
-    fontSize: 'clamp(1rem,1.45vw,1.22rem)',
-    lineHeight: 1.65,
+  '& .hero-aside': {
+    display: 'grid',
+    justifyItems: 'start',
+    gap: 18,
+    paddingBottom: 8,
+  },
+  '& .hero-aside p': {
+    maxWidth: 330,
+    margin: 0,
+    color: 'rgba(255,255,255,.78)',
+    fontSize: 'clamp(.98rem,1.2vw,1.12rem)',
+    lineHeight: 1.55,
+  },
+  '& .hero-aside .MuiButton-root': {
+    minHeight: 0,
+    padding: '0 0 7px',
+    color: '#fff',
+    borderBottom: '1px solid rgba(255,255,255,.62)',
+    '& svg': { transition: 'transform 220ms ease' },
+    '&:hover': {
+      background: 'transparent',
+      borderColor: '#fff',
+      '& svg': { transform: 'translate(3px,-3px)' },
+    },
   },
   [theme.breakpoints.down('md')]: {
     minHeight: 760,
-    paddingTop: 150,
-    gap: 52,
-  },
-}));
-
-export const StyledHeroActions = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: 12,
-  marginTop: 36,
-  '& .MuiButton-root': { minHeight: 52 },
-  '& .MuiButton-outlined': {
-    color: '#fff',
-    borderColor: 'rgba(255,255,255,.48)',
-    '&:hover': { borderColor: '#fff', background: 'rgba(255,255,255,.08)' },
-  },
-  [theme.breakpoints.down('sm')]: { '& .MuiButton-root': { width: '100%' } },
-}));
-
-export const StyledHeroMeta = styled('div')(({ theme }) => ({
-  minHeight: 86,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: 28,
-  borderTop: '1px solid rgba(255,255,255,.28)',
-  '& p': {
-    margin: 0,
-    color: 'rgba(255,255,255,.72)',
-    fontSize: '.96rem',
-  },
-  '& a': {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 12,
-    color: '#fff',
-    fontSize: '.9rem',
-    fontWeight: 650,
-    '& svg': { transition: 'transform 220ms ease' },
-    '&:hover svg': { transform: 'translate(3px,3px)' },
+    paddingTop: 130,
+    '& .hero-statement': {
+      gridTemplateColumns: '1fr',
+      gap: 28,
+    },
+    '& h1': { maxWidth: 540 },
+    '& .hero-aside': { paddingBottom: 0 },
   },
   [theme.breakpoints.down('sm')]: {
-    minHeight: 76,
-    alignItems: 'flex-start',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    gap: 10,
-    '& p': { fontSize: '.88rem' },
+    width: 'calc(100% - 40px)',
+    minHeight: 700,
+    paddingBottom: 32,
+    '& h1': { fontSize: 'clamp(3.25rem,15vw,4.5rem)' },
   },
 }));
 

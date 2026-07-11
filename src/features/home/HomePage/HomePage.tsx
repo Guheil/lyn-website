@@ -1,16 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { Button, Stack, Typography } from '@mui/material';
 import { SectionHeading } from '@/components/common/SectionHeading';
 import { PropertyGrid } from '@/features/properties/components/PropertyGrid';
 import type { PublicProperty } from '@/server/modules/properties';
 import {
   StyledDark,
-  StyledHeroActions,
   StyledHeroContent,
   StyledHeroMedia,
-  StyledHeroMeta,
   StyledInner,
   StyledMetrics,
   StyledProcess,
@@ -34,23 +32,18 @@ export function HomePage({ featured }: { featured: PublicProperty[] }) {
         </StyledHeroMedia>
 
         <StyledHeroContent>
-          <div className="hero-copy">
-            <Typography variant="h1">Property decisions, grounded in La Union.</Typography>
-            <Typography className="hero-description">
-              Broker-led guidance for land, homes, commercial properties, and serious investment inquiries, presented with clear details and local context.
+          <div className="hero-statement">
+            <Typography variant="h1">
+              La Union,<br />seen clearly.
             </Typography>
-            <StyledHeroActions>
-              <Button href="/properties" variant="contained" color="secondary" endIcon={<ArrowUpRight size={17} />}>
+
+            <div className="hero-aside">
+              <Typography>Land, homes, and commercial property.</Typography>
+              <Button href="/properties" variant="text" endIcon={<ArrowUpRight size={17} />}>
                 Explore properties
               </Button>
-              <Button href="/contact" variant="outlined">Discuss a property</Button>
-            </StyledHeroActions>
+            </div>
           </div>
-
-          <StyledHeroMeta>
-            <Typography>Land, homes, and commercial property across La Union.</Typography>
-            <a href="#local-practice">See how Lyn works<ArrowDownRight size={18} /></a>
-          </StyledHeroMeta>
         </StyledHeroContent>
       </StyledVideoHero>
 
