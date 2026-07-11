@@ -73,6 +73,7 @@ const organizationJsonLd = {
       description:
         'A La Union property group that connects buyers, sellers, owners, and investors with assigned real estate brokers and property marketing support.',
       image: siteConfig.defaultImage,
+      logo: absoluteUrl('/brand/lyn-bactad-logo-on-light.png'),
       address: {
         '@type': 'PostalAddress',
         addressLocality: siteConfig.locality,

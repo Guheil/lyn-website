@@ -1,15 +1,18 @@
 import Link from 'next/link';
-import { Typography } from '@mui/material';
-import { StyledFooter, StyledFooterBottom, StyledFooterGrid } from './elements';
+import { StyledFooter, StyledFooterBottom, StyledFooterGrid, StyledFooterLogo } from './elements';
 
 export function SiteFooter() {
   return (
     <StyledFooter>
       <StyledFooterGrid>
         <div>
-          <Typography variant="h5" sx={{ fontWeight: 800 }}>
-            Lyn Bactad Property Group
-          </Typography>
+          <StyledFooterLogo
+            src="/brand/lyn-bactad-logo-on-dark.png"
+            alt="Lyn Bactad La Union Real Estate"
+            width={1400}
+            height={338}
+            loading="lazy"
+          />
           <p>
             Real estate listings, assigned broker coordination, property inquiries, and marketing support across La Union.
           </p>

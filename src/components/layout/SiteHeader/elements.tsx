@@ -20,6 +20,8 @@ export const StyledHeader = styled('header')(({ theme }) => ({
     insetInline: 0,
     width: '100%',
   },
+  '& .brand-logo--on-dark': { opacity: 1 },
+  '& .brand-logo--on-light': { opacity: 0 },
   [theme.breakpoints.down('sm')]: { height: 70 },
   '&[data-solid="true"]': {
     '--header-fg': theme.palette.text.primary,
@@ -29,6 +31,8 @@ export const StyledHeader = styled('header')(({ theme }) => ({
     borderBottomColor: theme.palette.divider,
     boxShadow: '0 10px 34px rgba(18,18,16,.045)',
     backdropFilter: 'blur(14px)',
+    '& .brand-logo--on-dark': { opacity: 0 },
+    '& .brand-logo--on-light': { opacity: 1 },
   },
 }));
 
@@ -51,32 +55,33 @@ export const StyledInner = styled('div')(({ theme }) => ({
 export const StyledBrand = styled('a')({
   display: 'inline-flex',
   alignItems: 'center',
-  gap: 12,
   flexShrink: 0,
   color: 'var(--header-fg)',
+  lineHeight: 0,
 });
 
-export const StyledBrandMark = styled('span')(({ theme }) => ({
-  width: 42,
-  height: 42,
-  border: '1px solid var(--header-border)',
+export const StyledBrandLogo = styled('span')(({ theme }) => ({
+  width: 'clamp(190px,17vw,240px)',
+  aspectRatio: '1400 / 338',
   display: 'grid',
-  placeItems: 'center',
-  color: 'var(--header-fg)',
-  fontSize: '.79rem',
-  fontWeight: 800,
-  letterSpacing: '.08em',
-  transition: 'border-color 220ms ease, color 220ms ease',
-  [theme.breakpoints.down('sm')]: { width: 38, height: 38, fontSize: '.72rem' },
+  alignItems: 'center',
+  '& .brand-logo': {
+    gridArea: '1 / 1',
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: 176,
+  },
 }));
 
-export const StyledBrandText = styled('span')(({ theme }) => ({
-  display: 'grid',
-  lineHeight: 1.15,
-  '& strong': { fontSize: '.96rem', letterSpacing: '-.01em' },
-  '& small': { color: 'var(--header-muted)', fontSize: '.72rem', transition: 'color 220ms ease' },
-  [theme.breakpoints.down('sm')]: { '& small': { display: 'none' } },
-}));
+export const StyledBrandImage = styled('img')({
+  display: 'block',
+  width: '100%',
+  height: 'auto',
+  objectFit: 'contain',
+  transition: 'opacity 220ms ease',
+  pointerEvents: 'none',
+  userSelect: 'none',
+});
 
 export const StyledNav = styled('nav')(({ theme }) => ({
   display: 'flex',
@@ -158,20 +163,24 @@ export const StyledMobilePanel = styled(Box)(({ theme }) => ({
   animation: 'slideIn 320ms cubic-bezier(.22,1,.36,1) both',
   '@keyframes slideIn': { from: { transform: 'translateX(100%)' }, to: { transform: 'translateX(0)' } },
   '& .mobile-head': {
+    minHeight: 54,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 18,
     paddingBottom: 22,
     borderBottom: `1px solid ${theme.palette.divider}`,
-    color: theme.palette.text.secondary,
-    fontSize: '.75rem',
-    letterSpacing: '.14em',
-    textTransform: 'uppercase',
+  },
+  '& .mobile-brand-logo': {
+    display: 'block',
+    width: 'min(210px, calc(100% - 62px))',
+    height: 'auto',
   },
   '& .mobile-head button': {
     display: 'inline-flex',
     color: theme.palette.text.primary,
     borderColor: theme.palette.divider,
+    flexShrink: 0,
   },
   '& .mobile-links': { display: 'grid', marginBlock: 22 },
   '& .mobile-links a': {
@@ -195,5 +204,6 @@ export const StyledMobilePanel = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     width: '100%',
     paddingInline: 20,
+    '& .mobile-brand-logo': { width: 176 },
   },
 }));

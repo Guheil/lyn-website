@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -7,8 +8,8 @@ import { Menu, X } from 'lucide-react';
 import { navigationItems } from '@/constants/navigation';
 import {
   StyledBrand,
-  StyledBrandMark,
-  StyledBrandText,
+  StyledBrandImage,
+  StyledBrandLogo,
   StyledHeader,
   StyledHeaderAction,
   StyledInner,
@@ -57,12 +58,25 @@ export function SiteHeader() {
     <>
       <StyledHeader className="site-header" data-home={isHome} data-solid={!isHome || hasScrolled || open}>
         <StyledInner>
-          <StyledBrand as={Link} href="/" aria-label="Lyn Bactad Property Group home">
-            <StyledBrandMark>LB</StyledBrandMark>
-            <StyledBrandText>
-              <strong>Lyn Bactad Property Group</strong>
-              <small>La Union Real Estate</small>
-            </StyledBrandText>
+          <StyledBrand as={Link} href="/" aria-label="Lyn Bactad La Union Real Estate home">
+            <StyledBrandLogo aria-hidden="true">
+              <StyledBrandImage
+                className="brand-logo brand-logo--on-dark"
+                src="/brand/lyn-bactad-logo-on-dark.png"
+                alt=""
+                width={1400}
+                height={338}
+                decoding="async"
+              />
+              <StyledBrandImage
+                className="brand-logo brand-logo--on-light"
+                src="/brand/lyn-bactad-logo-on-light.png"
+                alt=""
+                width={1400}
+                height={334}
+                decoding="async"
+              />
+            </StyledBrandLogo>
           </StyledBrand>
 
           <StyledNav aria-label="Main navigation">
@@ -96,7 +110,13 @@ export function SiteHeader() {
             data-lenis-prevent
           >
             <div className="mobile-head">
-              <span>Navigation</span>
+              <img
+                className="mobile-brand-logo"
+                src="/brand/lyn-bactad-logo-on-light.png"
+                alt="Lyn Bactad La Union Real Estate"
+                width={1400}
+                height={334}
+              />
               <StyledMenuButton aria-label="Close menu" onClick={() => setOpen(false)}>
                 <X size={21} />
               </StyledMenuButton>
