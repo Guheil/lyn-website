@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 import { ArrowLeft, ArrowUpRight, MapPin } from 'lucide-react';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { PropertyGallery } from '@/features/properties/components/PropertyGallery';
@@ -43,7 +42,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   return (
     <Box component="section" sx={{ py: 'clamp(56px,7vw,96px)', px: 'clamp(20px,4vw,48px)', bgcolor: 'background.default' }}>
       <Box sx={{ maxWidth: 1440, mx: 'auto' }}>
-        <Button component={Link} href="/properties" startIcon={<ArrowLeft size={17} />} sx={{ mb: 4 }}>
+        <Button href="/properties" startIcon={<ArrowLeft size={17} />} sx={{ mb: 4 }}>
           Back to properties
         </Button>
 
@@ -203,7 +202,6 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               </Box>
 
               <Button
-                component={Link}
                 href={`/contact?property=${encodeURIComponent(property.title)}`}
                 variant="contained"
                 color="secondary"
