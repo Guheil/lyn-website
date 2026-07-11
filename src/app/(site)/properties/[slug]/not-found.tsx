@@ -1,0 +1,2 @@
+import { Button, Container, Stack, Typography } from '@mui/material';
+export default function PropertyNotFound(){return <Container maxWidth="md" sx={{py:14}}><Stack spacing={3} sx={{alignItems:'flex-start'}}><Typography variant="overline">Property details</Typography><Typography variant="h1">Property not found.</Typography><Typography color="text.secondary">The listing may have been unpublished, removed, or the property reference is incomplete.</Typography><Button href="/properties" variant="contained">View all properties</Button></Stack></Container>}

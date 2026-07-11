@@ -1,0 +1,7 @@
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
+import { Box, Stack, Typography } from '@mui/material';
+import type { PropertyCardProps } from './interface';
+import { StyledBody, StyledCard, StyledMedia } from './elements';
+const placeholder = 'https://picsum.photos/seed/la-union-property-placeholder/1200/900';
+export function PropertyCard({ property }: PropertyCardProps) { return <StyledCard><Link href={`/properties/${property.slug}`} aria-label={`View ${property.title}`}><StyledMedia image={property.images[0] || placeholder} /><StyledBody><Stack direction="row" sx={{justifyContent:'space-between',alignItems:'center'}}><Typography variant="overline" color="primary.dark">{property.propertyType}</Typography>{property.isFeatured && <Typography variant="caption" color="text.secondary">Featured</Typography>}</Stack><Typography variant="h3" sx={{ fontSize: '1.42rem' }}>{property.title}</Typography><Typography sx={{fontSize:'1.15rem',fontWeight:700}}>{property.price}</Typography><Box className="meta"><span>{property.location}</span>{property.lotArea && <span>{property.lotArea}</span>}{property.floorArea && <span>{property.floorArea}</span>}</Box><Typography color="text.secondary" sx={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{property.shortDescription}</Typography><Stack direction="row" sx={{alignItems:'center',gap:1,color:'primary.dark',fontWeight:700,mt:1}}>View property <ArrowUpRight size={17} /></Stack></StyledBody></Link></StyledCard>; }

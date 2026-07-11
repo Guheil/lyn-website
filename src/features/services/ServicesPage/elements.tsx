@@ -1,0 +1,6 @@
+'use client';
+import { styled } from '@mui/material';
+export const StyledSection = styled('section')({ padding: 'clamp(72px,8vw,124px) clamp(20px,4vw,48px)' });
+export const StyledInner = styled('div')({ maxWidth: 1440, margin: '0 auto' });
+export const StyledGrid = styled('div')(({ theme }) => ({ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 14, '& article': { padding: 26, border: `1px solid ${theme.palette.divider}`, background: theme.palette.background.paper, minHeight: 240 }, '& span': { color: theme.palette.primary.dark, fontWeight: 800 }, [theme.breakpoints.down('lg')]: { gridTemplateColumns: 'repeat(2,1fr)' }, [theme.breakpoints.down('sm')]: { gridTemplateColumns: '1fr' } }));
+export const StyledMedia = styled('div')(({ theme }) => ({ display: 'grid', gridTemplateColumns: '.9fr 1.1fr', gap: 'clamp(42px,7vw,100px)', alignItems: 'start', '& .list': { display: 'grid', gap: 12 }, '& .item': { display: 'grid', gridTemplateColumns: '50px 1fr', gap: 12, padding: 24, border: `1px solid ${theme.palette.divider}`, background: '#fff' }, '& .item span': { gridRow: 'span 2', color: theme.palette.primary.dark, fontWeight: 800 }, '& .item p': { gridColumn: 2, margin: 0 }, [theme.breakpoints.down('lg')]: { gridTemplateColumns: '1fr' } }));

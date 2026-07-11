@@ -1,0 +1,5 @@
+'use client';
+import { styled } from '@mui/material';
+export const StyledCard = styled('article')(({ theme }) => ({ height: '100%', border: `1px solid ${theme.palette.divider}`, background: theme.palette.background.paper, overflow: 'hidden', transition: 'transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease', '&:hover': { transform: 'translateY(-4px)', boxShadow: '0 20px 55px rgba(22,20,16,.09)', borderColor: 'rgba(128,97,47,.45)' }, '& a': { display: 'grid', height: '100%' } }));
+export const StyledMedia = styled('div', { shouldForwardProp: (prop) => prop !== 'image' })<{ image: string }>(({ image }) => ({ minHeight: 290, background: `linear-gradient(rgba(32,32,30,.08),rgba(32,32,30,.08)), url("${image}") center/cover, linear-gradient(135deg,#d8d0c2,#f6f2ea)` }));
+export const StyledBody = styled('div')(({ theme }) => ({ padding: 24, display: 'grid', alignContent: 'start', gap: 12, '& p': { margin: 0 }, '& .meta': { display: 'flex', flexWrap: 'wrap', gap: 8 }, '& .meta span': { border: `1px solid ${theme.palette.divider}`, padding: '7px 9px', color: theme.palette.text.secondary, fontSize: '.8rem' } }));

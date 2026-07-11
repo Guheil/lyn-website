@@ -1,0 +1,12 @@
+import { z } from 'zod';
+import { plainText } from '@/server/security/plainText';
+export const createInquirySchema = z.object({
+  name: plainText('Name', 2, 120),
+  phone: plainText('Phone', 5, 40),
+  email: z.string().trim().toLowerCase().email().max(254),
+  inquiryType: z.enum(['Buying','Selling','Listing consultation','Property marketing','General inquiry']),
+  preferredPropertyType: z.enum(['Land','House and Lot','Residential','Commercial','Investment Property','Not sure']),
+  propertyReference: plainText('Property reference', 0, 180).default(''),
+  message: plainText('Message', 10, 2000),
+  website: z.string().max(0).optional().default(''),
+}).strict();
