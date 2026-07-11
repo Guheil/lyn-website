@@ -1,0 +1,420 @@
+// Paste this whole block into Atlas mongosh.
+// It updates matching property slugs and inserts any that do not exist.
+// Broker contacts are placeholders: replace them before production.
+
+db.properties.bulkWrite([
+  {
+    updateOne: {
+      filter: { slug: "prime-residential-lot-near-urbiztondo-surf-area" },
+      update: { $set: {
+          "title": "Prime Residential Lot Near Urbiztondo Surf Area",
+          "slug": "prime-residential-lot-near-urbiztondo-surf-area",
+          "propertyType": "Land",
+          "status": "published",
+          "location": "Urbiztondo, San Juan, La Union",
+          "price": "₱7,500,000",
+          "lotArea": "500 sqm",
+          "floorArea": "0 sqm",
+          "shortDescription": "A well-positioned residential lot near San Juan's surf, dining, and hospitality area, suitable for a private home, vacation residence, or small rental development.",
+          "features": [
+            "Near Urbiztondo tourism area",
+            "Accessible by paved barangay road",
+            "Suitable for residential development",
+            "Strong rental-market potential",
+            "Electricity and water available nearby"
+          ],
+          "images": [
+            "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=86",
+            "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=86"
+          ],
+          "isFeatured": true,
+          "publishedAt": new Date("2026-07-10T08:00:00.000Z"),
+          "createdAt": new Date("2026-06-25T08:00:00.000Z"),
+          "updatedAt": new Date("2026-07-10T08:00:00.000Z"),
+          "broker": {
+            "name": "Andrea Reyes",
+            "role": "Assigned Property Broker",
+            "agency": "Lyn Bactad Property Group",
+            "mobile": "+63 9XX XXX 1001",
+            "email": "andrea.reyes@example.com",
+            "serviceArea": "San Juan, Bacnotan, and northern La Union",
+            "isPlaceholder": true
+          }
+        } },
+      upsert: true
+    }
+  },
+  {
+    updateOne: {
+      filter: { slug: "modern-family-home-in-san-fernando-city" },
+      update: { $set: {
+          "title": "Modern Family Home in San Fernando City",
+          "slug": "modern-family-home-in-san-fernando-city",
+          "propertyType": "House and Lot",
+          "status": "published",
+          "location": "Pagdaraoan, San Fernando City, La Union",
+          "price": "₱8,900,000",
+          "lotArea": "260 sqm",
+          "floorArea": "185 sqm",
+          "shortDescription": "A contemporary two-storey home in a quiet residential area with practical access to schools, hospitals, government offices, and the city center.",
+          "features": [
+            "4 bedrooms",
+            "3 bathrooms",
+            "2-car parking",
+            "Open-plan living and dining area",
+            "Service kitchen and laundry area"
+          ],
+          "images": [
+            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=86",
+            "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1800&q=86"
+          ],
+          "isFeatured": true,
+          "publishedAt": new Date("2026-07-09T08:00:00.000Z"),
+          "createdAt": new Date("2026-06-24T08:00:00.000Z"),
+          "updatedAt": new Date("2026-07-09T08:00:00.000Z"),
+          "broker": {
+            "name": "Carlo Mendoza",
+            "role": "Assigned Property Broker",
+            "agency": "Lyn Bactad Property Group",
+            "mobile": "+63 9XX XXX 1002",
+            "email": "carlo.mendoza@example.com",
+            "serviceArea": "San Fernando City, Bauang, and central La Union",
+            "isPlaceholder": true
+          }
+        } },
+      upsert: true
+    }
+  },
+  {
+    updateOne: {
+      filter: { slug: "boutique-guesthouse-investment-in-san-juan" },
+      update: { $set: {
+          "title": "Boutique Guesthouse Investment in San Juan",
+          "slug": "boutique-guesthouse-investment-in-san-juan",
+          "propertyType": "Investment Property",
+          "status": "published",
+          "location": "Taboc, San Juan, La Union",
+          "price": "₱18,500,000",
+          "lotArea": "420 sqm",
+          "floorArea": "310 sqm",
+          "shortDescription": "A small hospitality property designed for short-term stays, with multiple guest rooms, shared outdoor space, and convenient access to San Juan's beach and commercial areas.",
+          "features": [
+            "8 guest rooms",
+            "Reception and common lounge",
+            "Outdoor dining area",
+            "Caretaker's room",
+            "Existing short-stay layout",
+            "Near beach and restaurants"
+          ],
+          "images": [
+            "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=86",
+            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1800&q=86"
+          ],
+          "isFeatured": true,
+          "publishedAt": new Date("2026-07-08T08:00:00.000Z"),
+          "createdAt": new Date("2026-06-23T08:00:00.000Z"),
+          "updatedAt": new Date("2026-07-08T08:00:00.000Z"),
+          "broker": {
+            "name": "Andrea Reyes",
+            "role": "Assigned Property Broker",
+            "agency": "Lyn Bactad Property Group",
+            "mobile": "+63 9XX XXX 1001",
+            "email": "andrea.reyes@example.com",
+            "serviceArea": "San Juan, Bacnotan, and northern La Union",
+            "isPlaceholder": true
+          }
+        } },
+      upsert: true
+    }
+  },
+  {
+    updateOne: {
+      filter: { slug: "commercial-lot-along-macarthur-highway-bauang" },
+      update: { $set: {
+          "title": "Commercial Lot Along MacArthur Highway in Bauang",
+          "slug": "commercial-lot-along-macarthur-highway-bauang",
+          "propertyType": "Commercial",
+          "status": "published",
+          "location": "Baccuit Sur, Bauang, La Union",
+          "price": "₱12,800,000",
+          "lotArea": "800 sqm",
+          "floorArea": "0 sqm",
+          "shortDescription": "A highway-facing commercial parcel with strong visibility and access, suitable for retail, offices, a showroom, restaurant, or mixed-use development.",
+          "features": [
+            "MacArthur Highway frontage",
+            "High daily vehicle exposure",
+            "Wide development potential",
+            "Accessible to San Fernando and southern La Union",
+            "Utilities available nearby"
+          ],
+          "images": [
+            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=86",
+            "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=86"
+          ],
+          "isFeatured": false,
+          "publishedAt": new Date("2026-07-07T08:00:00.000Z"),
+          "createdAt": new Date("2026-06-22T08:00:00.000Z"),
+          "updatedAt": new Date("2026-07-07T08:00:00.000Z"),
+          "broker": {
+            "name": "Carlo Mendoza",
+            "role": "Assigned Property Broker",
+            "agency": "Lyn Bactad Property Group",
+            "mobile": "+63 9XX XXX 1002",
+            "email": "carlo.mendoza@example.com",
+            "serviceArea": "San Fernando City, Bauang, and central La Union",
+            "isPlaceholder": true
+          }
+        } },
+      upsert: true
+    }
+  },
+  {
+    updateOne: {
+      filter: { slug: "agricultural-land-with-mountain-views-bacnotan" },
+      update: { $set: {
+          "title": "Agricultural Land With Mountain Views in Bacnotan",
+          "slug": "agricultural-land-with-mountain-views-bacnotan",
+          "propertyType": "Land",
+          "status": "published",
+          "location": "Poblacion, Bacnotan, La Union",
+          "price": "₱6,400,000",
+          "lotArea": "3,200 sqm",
+          "floorArea": "0 sqm",
+          "shortDescription": "A broad agricultural property with open views and road access, suitable for farming, a private compound, eco-tourism, or a countryside rest house.",
+          "features": [
+            "Mountain and countryside views",
+            "Road access",
+            "Large usable land area",
+            "Suitable for farm or private estate",
+            "Quiet location with town access"
+          ],
+          "images": [
+            "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=86",
+            "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1800&q=86"
+          ],
+          "isFeatured": false,
+          "publishedAt": new Date("2026-07-06T08:00:00.000Z"),
+          "createdAt": new Date("2026-06-21T08:00:00.000Z"),
+          "updatedAt": new Date("2026-07-06T08:00:00.000Z"),
+          "broker": {
+            "name": "Paolo Dela Cruz",
+            "role": "Assigned Property Broker",
+            "agency": "Lyn Bactad Property Group",
+            "mobile": "+63 9XX XXX 1004",
+            "email": "paolo.delacruz@example.com",
+            "serviceArea": "Luna, Bacnotan, and investment properties across La Union",
+            "isPlaceholder": true
+          }
+        } },
+      upsert: true
+    }
+  },
+  {
+    updateOne: {
+      filter: { slug: "two-storey-house-and-lot-in-agoo" },
+      update: { $set: {
+          "title": "Two-Storey House and Lot in Agoo",
+          "slug": "two-storey-house-and-lot-in-agoo",
+          "propertyType": "House and Lot",
+          "status": "published",
+          "location": "San Agustin East, Agoo, La Union",
+          "price": "₱5,950,000",
+          "lotArea": "240 sqm",
+          "floorArea": "150 sqm",
+          "shortDescription": "A practical family residence near Agoo's town center, public market, schools, and major transport routes, with comfortable indoor and outdoor living space.",
+          "features": [
+            "3 bedrooms",
+            "2 bathrooms",
+            "Covered parking",
+            "Fenced property",
+            "Balcony and service area"
+          ],
+          "images": [
+            "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1800&q=86",
+            "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1800&q=86"
+          ],
+          "isFeatured": false,
+          "publishedAt": new Date("2026-07-05T08:00:00.000Z"),
+          "createdAt": new Date("2026-06-20T08:00:00.000Z"),
+          "updatedAt": new Date("2026-07-05T08:00:00.000Z"),
+          "broker": {
+            "name": "Mariel Santos",
+            "role": "Assigned Property Broker",
+            "agency": "Lyn Bactad Property Group",
+            "mobile": "+63 9XX XXX 1003",
+            "email": "mariel.santos@example.com",
+            "serviceArea": "Agoo, Caba, Rosario, and southern La Union",
+            "isPlaceholder": true
+          }
+        } },
+      upsert: true
+    }
+  },
+  {
+    updateOne: {
+      filter: { slug: "beachfront-residential-lot-in-luna" },
+      update: { $set: {
+          "title": "Beachfront Residential Lot in Luna",
+          "slug": "beachfront-residential-lot-in-luna",
+          "propertyType": "Land",
+          "status": "published",
+          "location": "Darigayos, Luna, La Union",
+          "price": "₱13,500,000",
+          "lotArea": "1,000 sqm",
+          "floorArea": "0 sqm",
+          "shortDescription": "A beachfront parcel in Luna with direct coastal exposure, suited for a private retreat, vacation home, or carefully planned boutique accommodation.",
+          "features": [
+            "Direct beachfront access",
+            "Wide sea frontage",
+            "Sunset views",
+            "Suitable for resort or private residence",
+            "Accessible from the national highway"
+          ],
+          "images": [
+            "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=1800&q=86",
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=86"
+          ],
+          "isFeatured": true,
+          "publishedAt": new Date("2026-07-04T08:00:00.000Z"),
+          "createdAt": new Date("2026-06-19T08:00:00.000Z"),
+          "updatedAt": new Date("2026-07-04T08:00:00.000Z"),
+          "broker": {
+            "name": "Paolo Dela Cruz",
+            "role": "Assigned Property Broker",
+            "agency": "Lyn Bactad Property Group",
+            "mobile": "+63 9XX XXX 1004",
+            "email": "paolo.delacruz@example.com",
+            "serviceArea": "Luna, Bacnotan, and investment properties across La Union",
+            "isPlaceholder": true
+          }
+        } },
+      upsert: true
+    }
+  },
+  {
+    updateOne: {
+      filter: { slug: "roadside-commercial-property-near-rosario-junction" },
+      update: { $set: {
+          "title": "Roadside Commercial Property Near Rosario Junction",
+          "slug": "roadside-commercial-property-near-rosario-junction",
+          "propertyType": "Commercial",
+          "status": "published",
+          "location": "Poblacion East, Rosario, La Union",
+          "price": "₱9,750,000",
+          "lotArea": "650 sqm",
+          "floorArea": "210 sqm",
+          "shortDescription": "A strategically located roadside property near Rosario's transport and expressway connections, suitable for retail, food service, offices, or logistics support.",
+          "features": [
+            "Near major highway junction",
+            "Existing commercial structure",
+            "Parking area",
+            "High roadside visibility",
+            "Suitable for multiple business uses"
+          ],
+          "images": [
+            "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1800&q=86",
+            "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1800&q=86"
+          ],
+          "isFeatured": false,
+          "publishedAt": new Date("2026-07-03T08:00:00.000Z"),
+          "createdAt": new Date("2026-06-18T08:00:00.000Z"),
+          "updatedAt": new Date("2026-07-03T08:00:00.000Z"),
+          "broker": {
+            "name": "Mariel Santos",
+            "role": "Assigned Property Broker",
+            "agency": "Lyn Bactad Property Group",
+            "mobile": "+63 9XX XXX 1003",
+            "email": "mariel.santos@example.com",
+            "serviceArea": "Agoo, Caba, Rosario, and southern La Union",
+            "isPlaceholder": true
+          }
+        } },
+      upsert: true
+    }
+  },
+  {
+    updateOne: {
+      filter: { slug: "rest-house-with-garden-in-caba" },
+      update: { $set: {
+          "title": "Rest House With Garden in Caba",
+          "slug": "rest-house-with-garden-in-caba",
+          "propertyType": "House and Lot",
+          "status": "published",
+          "location": "Poblacion Norte, Caba, La Union",
+          "price": "₱7,200,000",
+          "lotArea": "420 sqm",
+          "floorArea": "170 sqm",
+          "shortDescription": "A relaxed rest-house property with a generous garden and comfortable indoor spaces, suitable as a family home, weekend residence, or small private rental.",
+          "features": [
+            "3 bedrooms",
+            "Landscaped garden",
+            "Covered outdoor dining area",
+            "Secure parking",
+            "Quiet residential setting"
+          ],
+          "images": [
+            "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1800&q=86",
+            "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1800&q=86"
+          ],
+          "isFeatured": false,
+          "publishedAt": new Date("2026-07-02T08:00:00.000Z"),
+          "createdAt": new Date("2026-06-17T08:00:00.000Z"),
+          "updatedAt": new Date("2026-07-02T08:00:00.000Z"),
+          "broker": {
+            "name": "Mariel Santos",
+            "role": "Assigned Property Broker",
+            "agency": "Lyn Bactad Property Group",
+            "mobile": "+63 9XX XXX 1003",
+            "email": "mariel.santos@example.com",
+            "serviceArea": "Agoo, Caba, Rosario, and southern La Union",
+            "isPlaceholder": true
+          }
+        } },
+      upsert: true
+    }
+  },
+  {
+    updateOne: {
+      filter: { slug: "warehouse-and-office-property-in-santo-tomas" },
+      update: { $set: {
+          "title": "Warehouse and Office Property in Santo Tomas",
+          "slug": "warehouse-and-office-property-in-santo-tomas",
+          "propertyType": "Investment Property",
+          "status": "published",
+          "location": "Damortis, Santo Tomas, La Union",
+          "price": "₱16,800,000",
+          "lotArea": "1,200 sqm",
+          "floorArea": "680 sqm",
+          "shortDescription": "A functional warehouse and office property positioned for distribution, storage, light industrial activity, or expansion along southern La Union's transport corridor.",
+          "features": [
+            "High-clearance warehouse",
+            "Separate office area",
+            "Truck-accessible yard",
+            "Loading and unloading space",
+            "Near national highway",
+            "Suitable for logistics operations"
+          ],
+          "images": [
+            "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=1800&q=86",
+            "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1800&q=86"
+          ],
+          "isFeatured": true,
+          "publishedAt": new Date("2026-07-01T08:00:00.000Z"),
+          "createdAt": new Date("2026-06-16T08:00:00.000Z"),
+          "updatedAt": new Date("2026-07-01T08:00:00.000Z"),
+          "broker": {
+            "name": "Paolo Dela Cruz",
+            "role": "Assigned Property Broker",
+            "agency": "Lyn Bactad Property Group",
+            "mobile": "+63 9XX XXX 1004",
+            "email": "paolo.delacruz@example.com",
+            "serviceArea": "Luna, Bacnotan, and investment properties across La Union",
+            "isPlaceholder": true
+          }
+        } },
+      upsert: true
+    }
+  }
+]);
+
+print("La Union property records and assigned broker placeholders were updated.");

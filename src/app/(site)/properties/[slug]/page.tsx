@@ -1,12 +1,23 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, ArrowUpRight, MapPin } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { Box, Button, Stack, Typography } from '@mui/material';
-import { brokerProfile } from '@/constants/broker';
+import { propertyGroupProfile } from '@/constants/broker';
 import { PropertyGallery } from '@/features/properties/components/PropertyGallery';
 import { publicPropertyService } from '@/server/modules/properties';
 
 export const dynamic = 'force-dynamic';
+
+function telephoneHref(value: string | undefined): string {
+  if (!value || /x/i.test(value)) return '';
+  const normalized = value.replace(/[^\d+]/g, '');
+  return normalized.replace(/\D/g, '').length >= 10 ? `tel:${normalized}` : '';
+}
+
+function emailHref(value: string | undefined): string {
+  if (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return '';
+  return `mailto:${value}`;
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -32,6 +43,15 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
   const features = Array.isArray(property.features) ? property.features.filter(Boolean) : [];
   const images = Array.isArray(property.images) ? property.images.filter(Boolean) : [];
+  const broker = property.broker;
+  const brokerName = broker?.name || 'Listing team';
+  const brokerInitials =
+    brokerName
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part.charAt(0).toUpperCase())
+      .join('') || 'RE';
 
   const facts = [
     { label: 'Property type', value: property.propertyType || 'Not provided' },
@@ -40,7 +60,15 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     { label: 'Floor area', value: property.floorArea || 'Not provided' },
   ];
 
-  const inquiryHref = `/contact?property=${encodeURIComponent(property.title)}`;
+  const brokerDetails = [
+    { label: 'Agency / team', value: broker?.agency || '' },
+    { label: 'Service area', value: broker?.serviceArea || '' },
+  ].filter((item) => item.value);
+
+  const propertyReference = broker ? `${property.title} | Assigned broker: ${broker.name}` : property.title;
+  const inquiryHref = `/contact?property=${encodeURIComponent(propertyReference.slice(0, 180))}`;
+  const phoneHref = telephoneHref(broker?.mobile);
+  const brokerEmailHref = emailHref(broker?.email);
 
   return (
     <Box component="section" sx={{ py: 'clamp(56px,7vw,96px)', px: 'clamp(20px,4vw,48px)', bgcolor: 'background.default' }}>
@@ -115,7 +143,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, 1fr) 380px' },
+            gridTemplateColumns: { xs: '1fr', lg: 'minmax(0, 1fr) 390px' },
             gap: { xs: 5, lg: 7 },
             mt: { xs: 5, lg: 7 },
             alignItems: 'start',
@@ -201,7 +229,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
               <Box sx={{ p: 'clamp(24px,3vw,34px)' }}>
                 <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
-                  Property representative
+                  Assigned property broker
                 </Typography>
 
                 <Stack direction="row" sx={{ gap: 2, alignItems: 'center', mb: 2.4 }}>
@@ -219,38 +247,74 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                       letterSpacing: '.08em',
                     }}
                   >
-                    LB
+                    {brokerInitials}
                   </Box>
                   <Box sx={{ minWidth: 0 }}>
-                    <Typography variant="h3" sx={{ fontSize: '1.35rem', lineHeight: 1.15 }}>
-                      {brokerProfile.name}
+                    <Typography variant="h3" sx={{ fontSize: '1.35rem', lineHeight: 1.15, overflowWrap: 'anywhere' }}>
+                      {brokerName}
                     </Typography>
-                    <Typography color="text.secondary" sx={{ mt: 0.5, fontSize: '.9rem' }}>
-                      {brokerProfile.role}
+                    <Typography color="text.secondary" sx={{ mt: 0.5, fontSize: '.9rem', overflowWrap: 'anywhere' }}>
+                      {broker?.role || 'Property representative'}
                     </Typography>
                   </Box>
                 </Stack>
 
-                <Box sx={{ display: 'grid', gap: 1.6, mb: 3 }}>
-                  <Box sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 1.3 }}>
-                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.4 }}>
-                      Company
-                    </Typography>
-                    <Typography sx={{ fontWeight: 600, lineHeight: 1.5 }}>{brokerProfile.company}</Typography>
+                {brokerDetails.length ? (
+                  <Box sx={{ display: 'grid', gap: 1.5, mb: 2.5 }}>
+                    {brokerDetails.map((detail) => (
+                      <Box key={detail.label} sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 1.3 }}>
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.4 }}>
+                          {detail.label}
+                        </Typography>
+                        <Typography sx={{ fontWeight: 600, lineHeight: 1.5, overflowWrap: 'anywhere' }}>{detail.value}</Typography>
+                      </Box>
+                    ))}
                   </Box>
-                  <Box sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 1.3 }}>
-                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.4 }}>
-                      Service area
+                ) : null}
+
+                {broker ? (
+                  <Box sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 1.5, mb: 2.5 }}>
+                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.2 }}>
+                      Direct contact
                     </Typography>
-                    <Typography sx={{ fontWeight: 600, lineHeight: 1.5 }}>{brokerProfile.serviceArea}</Typography>
+                    <Box sx={{ display: 'grid', gap: 1.25 }}>
+                      {broker.mobile ? (
+                        <Stack direction="row" sx={{ gap: 1.2, alignItems: 'center', minWidth: 0 }}>
+                          <Phone size={17} aria-hidden="true" />
+                          <Typography
+                            component={phoneHref ? 'a' : 'span'}
+                            href={phoneHref || undefined}
+                            sx={{ color: 'text.primary', fontWeight: 600, overflowWrap: 'anywhere' }}
+                          >
+                            {broker.mobile}
+                          </Typography>
+                        </Stack>
+                      ) : null}
+                      {broker.email ? (
+                        <Stack direction="row" sx={{ gap: 1.2, alignItems: 'center', minWidth: 0 }}>
+                          <Mail size={17} aria-hidden="true" />
+                          <Typography
+                            component={brokerEmailHref ? 'a' : 'span'}
+                            href={brokerEmailHref || undefined}
+                            sx={{ color: 'text.primary', fontWeight: 600, overflowWrap: 'anywhere' }}
+                          >
+                            {broker.email}
+                          </Typography>
+                        </Stack>
+                      ) : null}
+                    </Box>
                   </Box>
-                  <Box sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 1.3 }}>
-                    <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.4 }}>
-                      Contact channels
-                    </Typography>
-                    <Typography sx={{ fontWeight: 600 }}>{brokerProfile.channels}</Typography>
-                  </Box>
-                </Box>
+                ) : (
+                  <Typography sx={{ color: 'text.secondary', mb: 2.5, fontSize: '0.9rem', lineHeight: 1.65 }}>
+                    Broker contact information has not been published for this listing. Use the inquiry form and the property team will route your message.
+                  </Typography>
+                )}
+
+                {broker?.isPlaceholder ? (
+                  <Typography sx={{ bgcolor: '#f5f1e8', p: 1.5, mb: 2.2, fontSize: '0.82rem', lineHeight: 1.55 }}>
+                    Sample broker details. Replace the mobile number and email before publishing this listing.
+                  </Typography>
+                ) : null}
 
                 <Button
                   href={inquiryHref}
@@ -260,15 +324,53 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                   endIcon={<ArrowUpRight size={17} />}
                   sx={{ minHeight: 48 }}
                 >
-                  Inquire about this property
-                </Button>
-                <Button href="/credentials" fullWidth sx={{ mt: 1.2, minHeight: 46 }}>
-                  View broker credentials
+                  Send property inquiry
                 </Button>
 
-                <Typography sx={{ color: 'text.secondary', mt: 2.2, fontSize: '0.88rem', lineHeight: 1.65 }}>
-                  Include the property title in your message. Public-safe credentials and professional background are available for review on the Credentials page.
-                </Typography>
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' }, gap: 1, mt: 1 }}>
+                  {phoneHref ? (
+                    <Button href={phoneHref} startIcon={<Phone size={16} />} sx={{ minHeight: 46 }}>
+                      Call broker
+                    </Button>
+                  ) : null}
+                  {brokerEmailHref ? (
+                    <Button href={brokerEmailHref} startIcon={<Mail size={16} />} sx={{ minHeight: 46 }}>
+                      Email broker
+                    </Button>
+                  ) : null}
+                  {broker?.whatsappUrl ? (
+                    <Button
+                      href={broker.whatsappUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      startIcon={<MessageCircle size={16} />}
+                      sx={{ minHeight: 46 }}
+                    >
+                      WhatsApp
+                    </Button>
+                  ) : null}
+                  {broker?.facebookUrl ? (
+                    <Button href={broker.facebookUrl} target="_blank" rel="noopener noreferrer" sx={{ minHeight: 46 }}>
+                      Messenger / Facebook
+                    </Button>
+                  ) : null}
+                </Box>
+
+                <Box sx={{ borderTop: '1px solid', borderColor: 'divider', mt: 3, pt: 2.2 }}>
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 0.5 }}>
+                    Business owner and group credentials
+                  </Typography>
+                  <Typography sx={{ fontWeight: 700 }}>{propertyGroupProfile.ownerName}</Typography>
+                  <Typography color="text.secondary" sx={{ mt: 0.35, fontSize: '0.88rem' }}>
+                    {propertyGroupProfile.ownerRole}
+                  </Typography>
+                  <Button href={propertyGroupProfile.credentialsHref} fullWidth sx={{ mt: 1.2, minHeight: 46 }}>
+                    {propertyGroupProfile.credentialsLabel}
+                  </Button>
+                  <Typography sx={{ color: 'text.secondary', mt: 1.2, fontSize: '0.82rem', lineHeight: 1.6 }}>
+                    {propertyGroupProfile.credentialsNote}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
           </Box>

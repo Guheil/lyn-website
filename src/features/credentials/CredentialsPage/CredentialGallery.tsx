@@ -51,13 +51,12 @@ function CredentialImage({
 
 const placeholderCredentials: PlaceholderCredential[] = [
   {
-    id: 'professional-license',
-    title: 'Professional Real Estate License',
-    issuer: 'Issuing organization to be confirmed',
+    id: 'owner-identification',
+    title: 'Property Group Owner Identification',
+    issuer: 'Public-safe owner document to be supplied',
     image: '/credentials/sample-professional-license.jpg',
-    alt: 'Sample placeholder for a redacted professional real estate license',
+    alt: 'Sample placeholder for a redacted property group owner identification document',
     layout: 'portrait-large',
-    verificationNote: 'Official verification link will be added when supplied.',
   },
   {
     id: 'business-registration',
@@ -69,19 +68,19 @@ const placeholderCredentials: PlaceholderCredential[] = [
   },
   {
     id: 'training-certificate',
-    title: 'Professional Training Certificate',
+    title: 'Business Training Certificate',
     issuer: 'Training provider to be confirmed',
     image: '/credentials/sample-training-certificate.jpg',
-    alt: 'Sample placeholder for a professional real estate training certificate',
+    alt: 'Sample placeholder for a business or property-services training certificate',
     layout: 'landscape',
     verificationNote: 'Verification details may be shown when available.',
   },
   {
     id: 'membership-certificate',
-    title: 'Professional Membership',
+    title: 'Business or Industry Membership',
     issuer: 'Professional organization to be confirmed',
     image: '/credentials/sample-membership-certificate.jpg',
-    alt: 'Sample placeholder for a professional organization membership certificate',
+    alt: 'Sample placeholder for a business or industry membership certificate',
     layout: 'portrait',
   },
 ];

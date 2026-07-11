@@ -12,9 +12,9 @@ export function CredentialsPage() {
       <StyledCredentialsIntro>
         <StyledInner>
           <span className="intro-rule" aria-hidden="true" />
-          <h1>Credentials available for review.</h1>
+          <h1>Business credentials available for review.</h1>
           <p>
-            Public-safe copies of professional licenses, registrations, and certificates will be presented here to support informed property inquiries.
+            Public-safe copies of business registrations, permits, and owner documents for Lyn Bactad will be presented here to establish the legitimacy of the property group.
           </p>
         </StyledInner>
       </StyledCredentialsIntro>
