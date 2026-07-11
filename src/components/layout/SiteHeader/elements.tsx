@@ -20,6 +20,7 @@ export const StyledHeader = styled('header')(({ theme }) => ({
     insetInline: 0,
     width: '100%',
   },
+  [theme.breakpoints.down('sm')]: { height: 70 },
   '&[data-solid="true"]': {
     '--header-fg': theme.palette.text.primary,
     '--header-muted': theme.palette.text.secondary,
@@ -31,7 +32,7 @@ export const StyledHeader = styled('header')(({ theme }) => ({
   },
 }));
 
-export const StyledInner = styled('div')(() => ({
+export const StyledInner = styled('div')(({ theme }) => ({
   width: 'calc(100% - clamp(40px,8vw,96px))',
   maxWidth: 1440,
   minHeight: 78,
@@ -40,6 +41,11 @@ export const StyledInner = styled('div')(() => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: 24,
+  [theme.breakpoints.down('sm')]: {
+    width: 'calc(100% - 40px)',
+    minHeight: 70,
+    gap: 12,
+  },
 }));
 
 export const StyledBrand = styled('a')({
@@ -50,7 +56,7 @@ export const StyledBrand = styled('a')({
   color: 'var(--header-fg)',
 });
 
-export const StyledBrandMark = styled('span')({
+export const StyledBrandMark = styled('span')(({ theme }) => ({
   width: 42,
   height: 42,
   border: '1px solid var(--header-border)',
@@ -61,7 +67,8 @@ export const StyledBrandMark = styled('span')({
   fontWeight: 800,
   letterSpacing: '.08em',
   transition: 'border-color 220ms ease, color 220ms ease',
-});
+  [theme.breakpoints.down('sm')]: { width: 38, height: 38, fontSize: '.72rem' },
+}));
 
 export const StyledBrandText = styled('span')(({ theme }) => ({
   display: 'grid',
@@ -121,6 +128,8 @@ export const StyledMenuButton = styled(IconButton)(({ theme }) => ({
   border: '1px solid var(--header-border)',
   borderRadius: 0,
   transition: 'color 220ms ease, border-color 220ms ease',
+  minWidth: 44,
+  minHeight: 44,
   [theme.breakpoints.down('md')]: { display: 'inline-flex' },
 }));
 
@@ -138,12 +147,13 @@ export const StyledMobilePanel = styled(Box)(({ theme }) => ({
   top: 0,
   right: 0,
   bottom: 0,
-  width: 'min(90vw,430px)',
+  width: 'min(92vw,430px)',
   background: '#f6f2e9',
-  padding: 24,
+  padding: 'max(20px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom))',
   display: 'flex',
   flexDirection: 'column',
   overflowY: 'auto',
+  overscrollBehavior: 'contain',
   boxShadow: '-24px 0 70px rgba(18,18,16,.18)',
   animation: 'slideIn 320ms cubic-bezier(.22,1,.36,1) both',
   '@keyframes slideIn': { from: { transform: 'translateX(100%)' }, to: { transform: 'translateX(0)' } },
@@ -182,4 +192,8 @@ export const StyledMobilePanel = styled(Box)(({ theme }) => ({
     color: '#fff',
   },
   '& .mobile-note': { margin: '14px 0 0', color: theme.palette.text.secondary, fontSize: '.78rem' },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    paddingInline: 20,
+  },
 }));

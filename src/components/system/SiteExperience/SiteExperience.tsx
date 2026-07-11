@@ -1,8 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Lenis from 'lenis';
 import {
   StyledIntro,
@@ -11,8 +10,7 @@ import {
   StyledIntroStage,
 } from './elements';
 
-const INTRO_KEY = 'lyn-bactad-intro-played';
-const INTRO_DURATION_MS = 1420;
+const INTRO_DURATION_MS = 1500;
 
 const introImages = [
   'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=84',
@@ -21,12 +19,10 @@ const introImages = [
 ];
 
 export function SiteExperience({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
+  const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reducedMotion) return;
-
     const lenis = new Lenis({
       autoRaf: true,
       lerp: 0.085,
@@ -37,8 +33,7 @@ export function SiteExperience({ children }: { children: ReactNode }) {
       prevent: (node) => Boolean(node.closest('[data-lenis-prevent]')),
     });
 
-    const shouldWaitForIntro = pathname === '/' && document.documentElement.dataset.introSeen !== 'true';
-    if (shouldWaitForIntro) lenis.stop();
+    if (!reducedMotion) lenis.stop();
 
     const resume = () => lenis.start();
     window.addEventListener('site:intro-complete', resume);
@@ -47,33 +42,29 @@ export function SiteExperience({ children }: { children: ReactNode }) {
       window.removeEventListener('site:intro-complete', resume);
       lenis.destroy();
     };
-  }, [pathname]);
+  }, []);
 
   useEffect(() => {
-    if (pathname !== '/') return;
-
     const root = document.documentElement;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const alreadyPlayed = root.dataset.introSeen === 'true';
 
-    if (alreadyPlayed || reducedMotion) {
-      root.dataset.introSeen = 'true';
-      window.dispatchEvent(new Event('site:intro-complete'));
-      return;
+    if (reducedMotion) {
+      const completeImmediately = window.setTimeout(() => {
+        root.dataset.introSeen = 'true';
+        setShowIntro(false);
+        window.dispatchEvent(new Event('site:intro-complete'));
+      }, 0);
+      return () => window.clearTimeout(completeImmediately);
     }
 
-    try {
-      window.sessionStorage.setItem(INTRO_KEY, 'true');
-    } catch {
-      // The transition still completes when session storage is unavailable.
-    }
-
+    root.dataset.introSeen = 'false';
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     const complete = window.setTimeout(() => {
       root.dataset.introSeen = 'true';
       document.body.style.overflow = previousOverflow;
+      setShowIntro(false);
       window.dispatchEvent(new Event('site:intro-complete'));
     }, INTRO_DURATION_MS);
 
@@ -81,11 +72,11 @@ export function SiteExperience({ children }: { children: ReactNode }) {
       window.clearTimeout(complete);
       document.body.style.overflow = previousOverflow;
     };
-  }, [pathname]);
+  }, []);
 
   return (
     <>
-      {pathname === '/' && (
+      {showIntro && (
         <StyledIntro className="site-intro" aria-hidden="true">
           <StyledIntroStage>
             {introImages.map((image, index) => (

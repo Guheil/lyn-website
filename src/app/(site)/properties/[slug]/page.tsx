@@ -30,6 +30,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
   if (!property) notFound();
 
+  const features = Array.isArray(property.features) ? property.features.filter(Boolean) : [];
+  const images = Array.isArray(property.images) ? property.images.filter(Boolean) : [];
+
   const facts = [
     { label: 'Property type', value: property.propertyType || 'Not provided' },
     { label: 'Location', value: property.location || 'Not provided' },
@@ -65,7 +68,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             >
               {property.propertyType}
             </Typography>
-            <Typography variant="h1" sx={{ fontSize: 'clamp(2.8rem,6vw,6.2rem)', lineHeight: 0.95, maxWidth: 920 }}>
+            <Typography variant="h1" sx={{ fontSize: 'clamp(2.65rem,6vw,6.2rem)', lineHeight: 0.95, maxWidth: 920, overflowWrap: 'anywhere' }}>
               {property.title}
             </Typography>
             <Stack direction="row" sx={{ gap: 1, alignItems: 'center', color: 'text.secondary', mt: 2.5 }}>
@@ -101,7 +104,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           </Box>
         </Box>
 
-        <PropertyGallery images={property.images} title={property.title} />
+        <PropertyGallery images={images} title={property.title} />
 
         <Box
           sx={{
@@ -152,13 +155,13 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               </Box>
             </Box>
 
-            {property.features.length ? (
+            {features.length ? (
               <Box>
                 <Typography variant="h2" sx={{ fontSize: 'clamp(1.8rem,2.2vw,2.5rem)', mb: 2.2 }}>
                   Features
                 </Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.2 }}>
-                  {property.features.map((feature) => (
+                  {features.map((feature) => (
                     <Box
                       key={feature}
                       sx={{
@@ -168,6 +171,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                         borderColor: 'divider',
                         bgcolor: 'background.paper',
                         fontSize: '0.92rem',
+                        overflowWrap: 'anywhere',
                       }}
                     >
                       {feature}

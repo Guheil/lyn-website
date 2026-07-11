@@ -14,8 +14,8 @@ export const StyledIntro = styled('div')(({ theme }) => ({
   pointerEvents: 'auto',
   clipPath: 'inset(0 0 0 0)',
   animation: [
-    'introImageExit 620ms cubic-bezier(.76,0,.24,1) 790ms forwards',
-    'introFallbackHide 1ms linear 1650ms forwards',
+    'introImageExit 620ms cubic-bezier(.76,0,.24,1) 820ms forwards',
+    'introFallbackHide 1ms linear 1499ms forwards',
   ].join(','),
   willChange: 'clip-path, visibility',
   '@keyframes introImageExit': {
@@ -24,7 +24,6 @@ export const StyledIntro = styled('div')(({ theme }) => ({
   '@keyframes introFallbackHide': {
     to: { opacity: 0, visibility: 'hidden', pointerEvents: 'none' },
   },
-  '[data-intro-seen="true"] &': { display: 'none' },
   [theme.breakpoints.down('sm')]: {
     paddingInline: 18,
   },
@@ -58,9 +57,12 @@ export const StyledIntroStage = styled('div')(({ theme }) => ({
   },
   [theme.breakpoints.down('sm')]: {
     width: '100%',
-    height: 'min(62vh, 500px)',
+    height: 'min(58svh, 480px)',
     gap: 8,
     '&::before': { inset: -10 },
+  },
+  '@media (max-width: 380px)': {
+    gridTemplateColumns: '1fr',
   },
 }));
 
@@ -102,6 +104,10 @@ export const StyledIntroPanel = styled('div', {
   [theme.breakpoints.down('sm')]: {
     '&.intro-image-1': { backgroundPosition: '52% center' },
     '&.intro-image-2': { backgroundPosition: '55% center' },
+  },
+  '@media (max-width: 380px)': {
+    '&.intro-image-1, &.intro-image-3': { display: 'none' },
+    '&.intro-image-2': { display: 'block' },
   },
 }));
 

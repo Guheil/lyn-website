@@ -29,7 +29,12 @@ export const StyledThumbRail = styled('div')(({ theme }) => ({
     gridTemplateRows: 'unset',
     gridTemplateColumns: 'repeat(5, minmax(88px, 1fr))',
     overflowX: 'auto',
-    paddingBottom: 2,
+    paddingBottom: 4,
+    scrollSnapType: 'x proximity',
+    overscrollBehaviorInline: 'contain',
+    WebkitOverflowScrolling: 'touch',
+    scrollbarWidth: 'none',
+    '&::-webkit-scrollbar': { display: 'none' },
   },
 }));
 
@@ -41,6 +46,7 @@ export const StyledThumb = styled('button', {
   padding: 0,
   background: `url("${image}") center/cover, #d8d0c2`,
   cursor: 'pointer',
+  scrollSnapAlign: 'start',
   opacity: active ? 1 : 0.72,
   transition: 'opacity 180ms ease, transform 180ms ease, border-color 180ms ease',
   '&:hover': {

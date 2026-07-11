@@ -1,16 +1,34 @@
 * { box-sizing: border-box; }
-html { scroll-padding-top: 92px; background: #fbfaf7; }
-body { margin: 0; overflow-x: clip; }
+html {
+  scroll-padding-top: 92px;
+  background: #fbfaf7;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  min-width: 0;
+  overflow-x: clip;
+}
+main { min-width: 0; }
 a { color: inherit; text-decoration: none; }
+a, button { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 button, input, textarea, select { font: inherit; }
 img, svg, video { display: block; max-width: 100%; }
+h1, h2, h3, h4, p, a, span { overflow-wrap: break-word; }
 ::selection { background: rgba(128, 97, 47, .25); }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 
 html:not([data-intro-seen="true"]) [data-home-hero] .hero-media {
   transform: scale(1.035);
 }
 html[data-intro-seen="true"] [data-home-hero] .hero-media {
   transform: scale(1);
+}
+
+@media (max-width: 600px) {
+  html { scroll-padding-top: 78px; }
+  input, textarea, select, .MuiInputBase-input { font-size: 16px !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -62,9 +62,9 @@ export const StyledServiceEditorial = styled('div')(({ theme }) => ({
     '& .service-image': { minHeight: 520 },
   },
   [theme.breakpoints.down('sm')]: {
-    '& .service-image': { minHeight: 390 },
-    '& .service-copy': { padding: '42px 0 58px' },
-    '& h2': { fontSize: 'clamp(2.25rem,11vw,3.4rem)' },
+    '& .service-image': { minHeight: 330 },
+    '& .service-copy': { padding: '38px 0 52px' },
+    '& h2': { fontSize: 'clamp(2.2rem,11vw,3.4rem)', overflowWrap: 'anywhere' },
   },
 }));
 
@@ -84,5 +84,8 @@ export const StyledMedia = styled('div')(({ theme }) => ({
     gridTemplateColumns: '1fr',
     '& .media-image': { minHeight: 520 },
   },
-  [theme.breakpoints.down('sm')]: { '& .media-image': { minHeight: 390 } },
+  [theme.breakpoints.down('sm')]: {
+    '& .media-image': { minHeight: 330 },
+    '& .media-copy': { paddingBlock: 0 },
+  },
 }));

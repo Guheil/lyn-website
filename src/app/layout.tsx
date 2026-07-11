@@ -13,18 +13,9 @@ export const metadata: Metadata = {
   description: 'Real estate listings, brokerage assistance, and property marketing in La Union.',
 };
 
-const introStateScript = `
-  try {
-    if (window.sessionStorage.getItem('lyn-bactad-intro-played') === 'true') {
-      document.documentElement.dataset.introSeen = 'true';
-    }
-  } catch (error) {}
-`;
-
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head><script dangerouslySetInnerHTML={{ __html: introStateScript }} /></head>
       <body suppressHydrationWarning>
         <ThemeRegistry>
           <SiteExperience>{children}</SiteExperience>

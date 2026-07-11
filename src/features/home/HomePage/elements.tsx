@@ -9,7 +9,8 @@ export const StyledVideoHero = styled('section')(({ theme }) => ({
   background: '#191a17',
   color: '#fff',
   isolation: 'isolate',
-  [theme.breakpoints.down('md')]: { minHeight: 760 },
+  [theme.breakpoints.down('md')]: { minHeight: 'max(680px, 100svh)' },
+  [theme.breakpoints.down('sm')]: { minHeight: 'max(620px, 100svh)' },
 }));
 
 export const StyledHeroMedia = styled('div')(({ theme }) => ({
@@ -105,8 +106,8 @@ export const StyledHeroContent = styled('div')(({ theme }) => ({
     },
   },
   [theme.breakpoints.down('md')]: {
-    minHeight: 760,
-    paddingTop: 130,
+    minHeight: 'max(680px, 100svh)',
+    paddingTop: 120,
     '& .hero-statement': {
       gridTemplateColumns: '1fr',
       gap: 28,
@@ -116,9 +117,12 @@ export const StyledHeroContent = styled('div')(({ theme }) => ({
   },
   [theme.breakpoints.down('sm')]: {
     width: 'calc(100% - 40px)',
-    minHeight: 700,
-    paddingBottom: 32,
-    '& h1': { fontSize: 'clamp(3.25rem,15vw,4.5rem)' },
+    minHeight: 'max(620px, 100svh)',
+    paddingTop: 108,
+    paddingBottom: 'max(28px, env(safe-area-inset-bottom))',
+    '& h1': { fontSize: 'clamp(3rem,14vw,4.2rem)', overflowWrap: 'anywhere' },
+    '& .hero-statement': { gap: 22 },
+    '& .hero-aside': { gap: 14 },
   },
 }));
 
@@ -198,7 +202,10 @@ export const StyledProcess = styled('div')(({ theme }) => ({
     gridTemplateColumns: '1fr',
     '& .image': { minHeight: 520 },
   },
-  [theme.breakpoints.down('sm')]: { '& .image': { minHeight: 400 } },
+  [theme.breakpoints.down('sm')]: {
+    '& .image': { minHeight: 340 },
+    '& .step': { gridTemplateColumns: '38px 1fr', padding: '19px 0' },
+  },
 }));
 
 export const StyledDark = styled('section')(({ theme }) => ({
@@ -233,6 +240,9 @@ export const StyledDark = styled('section')(({ theme }) => ({
     '& .dark-grid': { gridTemplateColumns: '1fr' },
     '& .dark-rule': { marginTop: 0 },
     '& .dark-copy': { maxWidth: 620 },
+  },
+  [theme.breakpoints.down('sm')]: {
+    '& h2': { fontSize: 'clamp(2.35rem,12vw,3.7rem)' },
   },
 }));
 
@@ -320,9 +330,10 @@ export const StyledServiceGrid = styled('div')(({ theme }) => ({
     '& .service-card--primary': { gridColumn: 'auto' },
   },
   [theme.breakpoints.down('sm')]: {
-    gridTemplateRows: 'repeat(3, 390px)',
+    gridTemplateRows: 'repeat(3, minmax(350px, 78vw))',
     '& .service-content': { padding: 22, gap: 18 },
     '& .service-arrow': { width: 42, height: 42 },
     '& p': { fontSize: '.88rem' },
+    '& h3': { overflowWrap: 'anywhere' },
   },
 }));

@@ -7,7 +7,10 @@ import { StyledGallery, StyledMainImage, StyledThumb, StyledThumbRail } from './
 const fallback = 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=84';
 
 export function PropertyGallery({ images, title }: PropertyGalleryProps) {
-  const safe = useMemo(() => (images.length ? images : [fallback]), [images]);
+  const safe = useMemo(() => {
+    const validImages = Array.isArray(images) ? images.filter((image) => typeof image === 'string' && image.trim()) : [];
+    return validImages.length ? validImages : [fallback];
+  }, [images]);
   const [active, setActive] = useState(safe[0]);
   const activeIndex = Math.max(0, safe.findIndex((image) => image === active));
 

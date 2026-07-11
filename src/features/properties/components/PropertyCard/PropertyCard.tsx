@@ -20,9 +20,9 @@ export function PropertyCard({ property }: PropertyCardProps) {
           <span className="property-arrow"><ArrowUpRight size={18} /></span>
         </StyledMedia>
         <StyledBody>
-          <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'baseline', gap: 2 }}>
+          <Stack direction="row" sx={{ alignItems: 'baseline', gap: 1.5, flexWrap: 'wrap' }}>
             <Typography variant="overline" color="primary.dark">{property.propertyType}</Typography>
-            <Typography sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}>{property.price}</Typography>
+            <Typography sx={{ fontWeight: 700, whiteSpace: 'nowrap', ml: 'auto' }}>{property.price}</Typography>
           </Stack>
           <Typography variant="h3">{property.title}</Typography>
           <div className="meta">{facts.map((fact) => <span key={fact}>{fact}</span>)}</div>
