@@ -21,7 +21,7 @@ export function SectionHeading({ title, description, label, centered }: SectionH
           }}
         />
       )}
-      <Typography variant="h2" sx={{ fontSize: 'clamp(2rem,4.6vw,4.8rem)', maxWidth: 980 }}>
+      <Typography variant="h2" sx={{ fontSize: 'clamp(2rem,4.6vw,4.8rem)', maxWidth: 580 }}>
         {title}
       </Typography>
       {description && (
